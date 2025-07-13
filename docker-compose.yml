@@ -1,0 +1,47 @@
+services:
+  app:
+    build:
+      context: .
+      target: dev
+    container_name: faztore-admin
+    ports:
+      - '5173:5173'
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/faztore_admin
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - faztore-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: faztore-db
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: faztore_admin
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/dev/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - faztore-network
+
+volumes:
+  node_modules:
+  postgres_data:
+
+networks:
+  faztore-network:
+    driver: bridge

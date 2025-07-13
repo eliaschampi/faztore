@@ -1,0 +1,27 @@
+{
+	"name": "faztore-admin",
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/app",
+	"shutdownAction": "stopCompose",
+	"features": {
+		"ghcr.io/devcontainers-extra/features/bash-command:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": ["svelte.svelte-vscode", "Augment.vscode-augment"]
+		}
+	},
+	"forwardPorts": [5173, 5432],
+	"portsAttributes": {
+		"5173": {
+			"label": "Svelte Dev",
+			"onAutoForward": "notify"
+		},
+		"5432": {
+			"label": "PostgreSQL Database",
+			"onAutoForward": "silent"
+		}
+	},
+	"remoteUser": "node"
+}
