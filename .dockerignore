@@ -1,0 +1,39 @@
+# Development tools
+.vscode
+.idea
+.devcontainer
+
+# Build outputs
+build/
+dist/
+.svelte-kit/
+.output
+
+# Testing and coverage
+coverage/
+.nyc_output/
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env*
+.env.*.local
+.env.local
+
+# Version control
+.git/
+.gitignore
+
+# Docker data
+docker/data/
+
+# Documentation and misc
+DOCKER_README.md
+README.md
+.DS_Store
+Thumbs.db

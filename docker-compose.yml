@@ -1,0 +1,39 @@
+services:
+  app:
+    container_name: faztore_app
+    build: .
+    ports: ["5173:5173"]
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: faztore
+      DB_PORT: 5432
+      NODE_ENV: development
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production-2024
+      JWT_EXPIRES_IN: 8h
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  postgres:
+    container_name: faztore_postgres
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: faztore
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres_data:
+  node_modules:

@@ -1,0 +1,291 @@
+@import 'tailwindcss';
+
+@plugin "daisyui" {
+	themes: false;
+	exclude: rootscrollgutter;
+}
+
+@plugin "daisyui/theme" {
+	name: 'dark';
+	default: true;
+	prefersdark: true;
+	color-scheme: 'dark';
+	/* Base colors - Clean dark foundation */
+	--color-base-100: oklch(12% 0.01 120);
+	/* Deep dark with subtle lime hint */
+	--color-base-200: oklch(16% 0.01 120);
+	/* Subtle elevation */
+	--color-base-300: oklch(20% 0.01 120);
+	/* Borders and dividers */
+	--color-base-content: oklch(95% 0.005 120);
+	/* High contrast text */
+
+	/* Primary - Vibrant lime green */
+	--color-primary: oklch(75% 0.18 130);
+	/* Bright lime green */
+	--color-primary-content: oklch(15% 0.02 130);
+
+	/* Secondary - Complementary purple */
+	--color-secondary: oklch(65% 0.15 280);
+	--color-secondary-content: oklch(95% 0.005 280);
+
+	/* Accent - Warm orange */
+	--color-accent: oklch(70% 0.16 50);
+	--color-accent-content: oklch(15% 0.02 50);
+
+	/* Neutral - Consistent with base */
+	--color-neutral: oklch(18% 0.01 120);
+	--color-neutral-content: oklch(95% 0.005 120);
+
+	/* Semantic colors - Clear and distinct */
+	--color-info: oklch(70% 0.15 220);
+	--color-info-content: oklch(15% 0.02 220);
+
+	--color-success: oklch(75% 0.18 130);
+	/* Same as primary for consistency */
+	--color-success-content: oklch(15% 0.02 130);
+
+	--color-warning: oklch(60% 0.15 80);
+	--color-warning-content: oklch(15% 0.02 80);
+
+	--color-error: oklch(65% 0.2 15);
+	--color-error-content: oklch(95% 0.005 15);
+
+	/* UI Properties - Modern and clean */
+	--radius-selector: 0.5rem;
+	--radius-field: 0.375rem;
+	--radius-box: 0.75rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+}
+
+@plugin "daisyui/theme" {
+	name: 'light';
+	default: false;
+	prefersdark: false;
+	color-scheme: 'light';
+	/* Base colors - Clean light foundation */
+	--color-base-100: oklch(98% 0.005 120);
+	/* Pure white with lime hint */
+	--color-base-200: oklch(94% 0.01 120);
+	/* Subtle elevation */
+	--color-base-300: oklch(88% 0.015 120);
+	/* Borders and dividers */
+	--color-base-content: oklch(20% 0.02 120);
+	/* Dark text with lime hint */
+
+	/* Primary - Darker lime green for light mode */
+	--color-primary: oklch(55% 0.2 130);
+	/* Darker lime for contrast */
+	--color-primary-content: oklch(95% 0.005 130);
+
+	/* Secondary - Complementary purple */
+	--color-secondary: oklch(50% 0.18 280);
+	--color-secondary-content: oklch(95% 0.005 280);
+
+	/* Accent - Warm orange */
+	--color-accent: oklch(55% 0.18 50);
+	--color-accent-content: oklch(95% 0.005 50);
+
+	/* Neutral - Consistent with base */
+	--color-neutral: oklch(85% 0.015 120);
+	--color-neutral-content: oklch(20% 0.02 120);
+
+	/* Semantic colors - Clear and accessible */
+	--color-info: oklch(55% 0.18 220);
+	--color-info-content: oklch(95% 0.005 220);
+
+	--color-success: oklch(50% 0.16 135);
+	--color-success-content: oklch(95% 0.005 130);
+
+	--color-warning: oklch(60% 0.2 80);
+	--color-warning-content: oklch(95% 0.005 80);
+
+	--color-error: oklch(55% 0.22 15);
+	--color-error-content: oklch(95% 0.005 15);
+
+	/* UI Properties - Modern and clean */
+	--radius-selector: 0.5rem;
+	--radius-field: 0.375rem;
+	--radius-box: 0.75rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 1px;
+}
+
+.input,
+.textarea,
+.select {
+	&:focus,
+	&:focus-within {
+		outline-color: color-mix(in oklch, var(--color-primary) 40%, transparent);
+		border-color: var(--color-primary);
+		transition: all 0.2s ease;
+	}
+}
+
+/* Card gradient styles - Clean and modern */
+.card-gradient-primary {
+	background: color-mix(in oklch, var(--color-primary) 10%, var(--color-base-100));
+	border: 1px solid color-mix(in oklch, var(--color-primary) 20%, transparent);
+	transition: transform 0.2s ease;
+}
+
+.card-gradient-primary:hover {
+	transform: translateY(-2px);
+}
+
+.card-gradient-secondary {
+	background: color-mix(in oklch, var(--color-secondary) 10%, var(--color-base-100));
+	border: 1px solid color-mix(in oklch, var(--color-secondary) 20%, transparent);
+	transition: transform 0.2s ease;
+}
+
+.card-gradient-secondary:hover {
+	transform: translateY(-2px);
+}
+
+.card-gradient-accent {
+	background: color-mix(in oklch, var(--color-accent) 10%, var(--color-base-100));
+	border: 1px solid color-mix(in oklch, var(--color-accent) 20%, transparent);
+	transition: transform 0.2s ease;
+}
+
+.card-gradient-accent:hover {
+	transform: translateY(-2px);
+}
+
+.card-gradient-info {
+	background: color-mix(in oklch, var(--color-info) 10%, var(--color-base-100));
+	border: 1px solid color-mix(in oklch, var(--color-info) 20%, transparent);
+	transition: transform 0.2s ease;
+}
+
+.card-gradient-info:hover {
+	transform: translateY(-2px);
+}
+
+.card-gradient-neutral {
+	background: var(--color-base-200);
+	border: 1px solid var(--color-base-300);
+	transition: transform 0.2s ease;
+}
+
+.card-gradient-neutral:hover {
+	transform: translateY(-2px);
+}
+
+/* Icon containers - Clean and simple */
+.icon-container {
+	padding: 0.75rem;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.icon-container-primary {
+	background-color: color-mix(in oklch, var(--color-primary) 15%, transparent);
+	color: var(--color-primary);
+}
+
+.icon-container-secondary {
+	background-color: color-mix(in oklch, var(--color-secondary) 15%, transparent);
+	color: var(--color-secondary);
+}
+
+.icon-container-accent {
+	background-color: color-mix(in oklch, var(--color-accent) 15%, transparent);
+	color: var(--color-accent);
+}
+
+.icon-container-info {
+	background-color: color-mix(in oklch, var(--color-info) 15%, transparent);
+	color: var(--color-info);
+}
+
+/* Modern fieldset styling */
+.fieldset {
+	padding: 1rem;
+	border-radius: var(--radius-box);
+	border: 1px solid var(--color-base-300);
+}
+
+.fieldset > div {
+	margin: 0.5rem;
+}
+
+.input-hint {
+	font-size: 0.875rem;
+	opacity: 0.7;
+	margin-top: 0.25rem;
+	color: var(--color-base-content);
+}
+
+/* Data display */
+.data-display {
+	padding: 1.5rem;
+	background-color: var(--color-base-200);
+	border-radius: var(--radius-box);
+	margin-bottom: 1.5rem;
+}
+
+/* Empty states */
+.empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 3rem;
+	background-color: var(--color-base-100);
+	border-radius: var(--radius-box);
+}
+
+.empty-state-icon {
+	color: color-mix(in oklch, var(--color-base-content) 40%, transparent);
+	margin-bottom: 1rem;
+}
+
+.empty-state-title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+	color: var(--color-base-content);
+}
+
+.empty-state-message {
+	color: color-mix(in oklch, var(--color-base-content) 70%, transparent);
+	font-size: 0.875rem;
+}
+
+/* Enhanced modal styling */
+
+dialog.modal {
+	backdrop-filter: blur(8px);
+	background: color-mix(in oklch, var(--color-base-100) 70%, transparent);
+}
+
+dialog.modal .modal-box {
+	border: 1px solid var(--color-base-300);
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: color-mix(in oklch, var(--color-base-content) 20%, transparent);
+	border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: color-mix(in oklch, var(--color-base-content) 40%, transparent);
+}

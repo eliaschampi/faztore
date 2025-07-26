@@ -1,0 +1,27 @@
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+package-lock.json
+# OS
+.DS_Store
+Thumbs.db
+docker/data/
+/docker/data
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+.devcontainer
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.qodo
+bun.*
+llms.txt
