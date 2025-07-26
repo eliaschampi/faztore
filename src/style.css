@@ -10,46 +10,46 @@
 	default: true;
 	prefersdark: true;
 	color-scheme: 'dark';
-	/* Base colors - Clean dark foundation */
-	--color-base-100: oklch(12% 0.01 120);
-	/* Deep dark with subtle lime hint */
-	--color-base-200: oklch(16% 0.01 120);
-	/* Subtle elevation */
-	--color-base-300: oklch(20% 0.01 120);
-	/* Borders and dividers */
-	--color-base-content: oklch(95% 0.005 120);
-	/* High contrast text */
+	/* Base colors - Clean dark foundation with blue undertones */
+	--color-base-100: oklch(11% 0.015 240);
+	/* Deep dark with subtle blue hint */
+	--color-base-200: oklch(15% 0.02 240);
+	/* Subtle elevation with blue warmth */
+	--color-base-300: oklch(19% 0.025 240);
+	/* Borders and dividers with blue tint */
+	--color-base-content: oklch(96% 0.008 240);
+	/* High contrast text with blue undertone */
 
-	/* Primary - Vibrant lime green */
-	--color-primary: oklch(75% 0.18 130);
-	/* Bright lime green */
-	--color-primary-content: oklch(15% 0.02 130);
+	/* Primary - Beautiful vibrant blue */
+	--color-primary: oklch(68% 0.19 240);
+	/* Stunning electric blue */
+	--color-primary-content: oklch(12% 0.02 240);
 
-	/* Secondary - Complementary purple */
-	--color-secondary: oklch(65% 0.15 280);
-	--color-secondary-content: oklch(95% 0.005 280);
+	/* Secondary - Complementary cyan-teal */
+	--color-secondary: oklch(72% 0.16 200);
+	--color-secondary-content: oklch(12% 0.02 200);
 
-	/* Accent - Warm orange */
-	--color-accent: oklch(70% 0.16 50);
-	--color-accent-content: oklch(15% 0.02 50);
+	/* Accent - Elegant purple-indigo */
+	--color-accent: oklch(65% 0.18 280);
+	--color-accent-content: oklch(96% 0.008 280);
 
-	/* Neutral - Consistent with base */
-	--color-neutral: oklch(18% 0.01 120);
-	--color-neutral-content: oklch(95% 0.005 120);
+	/* Neutral - Consistent with base blue theme */
+	--color-neutral: oklch(17% 0.02 240);
+	--color-neutral-content: oklch(96% 0.008 240);
 
-	/* Semantic colors - Clear and distinct */
-	--color-info: oklch(70% 0.15 220);
-	--color-info-content: oklch(15% 0.02 220);
+	/* Semantic colors - Clear and distinct with blue harmony */
+	--color-info: oklch(70% 0.17 220);
+	--color-info-content: oklch(12% 0.02 220);
 
-	--color-success: oklch(75% 0.18 130);
-	/* Same as primary for consistency */
-	--color-success-content: oklch(15% 0.02 130);
+	--color-success: oklch(68% 0.16 160);
+	/* Harmonious green that complements blue */
+	--color-success-content: oklch(12% 0.02 160);
 
-	--color-warning: oklch(60% 0.15 80);
-	--color-warning-content: oklch(15% 0.02 80);
+	--color-warning: oklch(75% 0.18 60);
+	--color-warning-content: oklch(12% 0.02 60);
 
-	--color-error: oklch(65% 0.2 15);
-	--color-error-content: oklch(95% 0.005 15);
+	--color-error: oklch(68% 0.22 15);
+	--color-error-content: oklch(96% 0.008 15);
 
 	/* UI Properties - Modern and clean */
 	--radius-selector: 0.5rem;
@@ -65,45 +65,46 @@
 	default: false;
 	prefersdark: false;
 	color-scheme: 'light';
-	/* Base colors - Clean light foundation */
-	--color-base-100: oklch(98% 0.005 120);
-	/* Pure white with lime hint */
-	--color-base-200: oklch(94% 0.01 120);
-	/* Subtle elevation */
-	--color-base-300: oklch(88% 0.015 120);
-	/* Borders and dividers */
-	--color-base-content: oklch(20% 0.02 120);
-	/* Dark text with lime hint */
+	/* Base colors - Clean light foundation with blue undertones */
+	--color-base-100: oklch(99% 0.008 240);
+	/* Pure white with subtle blue hint */
+	--color-base-200: oklch(96% 0.012 240);
+	/* Subtle elevation with blue warmth */
+	--color-base-300: oklch(90% 0.018 240);
+	/* Borders and dividers with blue tint */
+	--color-base-content: oklch(18% 0.025 240);
+	/* Dark text with blue undertone */
 
-	/* Primary - Darker lime green for light mode */
-	--color-primary: oklch(55% 0.2 130);
-	/* Darker lime for contrast */
-	--color-primary-content: oklch(95% 0.005 130);
+	/* Primary - Rich professional blue for light mode */
+	--color-primary: oklch(55% 0.22 240);
+	/* Deep professional blue with perfect contrast */
+	--color-primary-content: oklch(98% 0.008 240);
 
-	/* Secondary - Complementary purple */
-	--color-secondary: oklch(50% 0.18 280);
-	--color-secondary-content: oklch(95% 0.005 280);
+	/* Secondary - Complementary cyan-teal */
+	--color-secondary: oklch(52% 0.18 200);
+	--color-secondary-content: oklch(98% 0.008 200);
 
-	/* Accent - Warm orange */
-	--color-accent: oklch(55% 0.18 50);
-	--color-accent-content: oklch(95% 0.005 50);
+	/* Accent - Elegant purple-indigo */
+	--color-accent: oklch(50% 0.20 280);
+	--color-accent-content: oklch(98% 0.008 280);
 
-	/* Neutral - Consistent with base */
-	--color-neutral: oklch(85% 0.015 120);
-	--color-neutral-content: oklch(20% 0.02 120);
+	/* Neutral - Consistent with base blue theme */
+	--color-neutral: oklch(88% 0.018 240);
+	--color-neutral-content: oklch(18% 0.025 240);
 
-	/* Semantic colors - Clear and accessible */
-	--color-info: oklch(55% 0.18 220);
-	--color-info-content: oklch(95% 0.005 220);
+	/* Semantic colors - Clear and accessible with blue harmony */
+	--color-info: oklch(52% 0.20 220);
+	--color-info-content: oklch(98% 0.008 220);
 
-	--color-success: oklch(50% 0.16 135);
-	--color-success-content: oklch(95% 0.005 130);
+	--color-success: oklch(48% 0.18 160);
+	/* Harmonious green that complements blue */
+	--color-success-content: oklch(98% 0.008 160);
 
-	--color-warning: oklch(60% 0.2 80);
-	--color-warning-content: oklch(95% 0.005 80);
+	--color-warning: oklch(65% 0.20 60);
+	--color-warning-content: oklch(98% 0.008 60);
 
-	--color-error: oklch(55% 0.22 15);
-	--color-error-content: oklch(95% 0.005 15);
+	--color-error: oklch(55% 0.24 15);
+	--color-error-content: oklch(98% 0.008 15);
 
 	/* UI Properties - Modern and clean */
 	--radius-selector: 0.5rem;
