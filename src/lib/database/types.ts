@@ -20,6 +20,22 @@ export interface Branches {
 	users: string[];
 }
 
+export interface Brands {
+	code: Generated<string>;
+	created_at: Generated<Timestamp>;
+	description: string | null;
+	name: string;
+	updated_at: Generated<Timestamp>;
+}
+
+export interface Categories {
+	code: Generated<string>;
+	created_at: Generated<Timestamp>;
+	description: string | null;
+	name: string;
+	updated_at: Generated<Timestamp>;
+}
+
 export interface Migrations {
 	batch: number;
 	executed_at: Generated<Timestamp>;
@@ -51,6 +67,8 @@ export interface Users {
 
 export interface DB {
 	branches: Branches;
+	brands: Brands;
+	categories: Categories;
 	migrations: Migrations;
 	permissions: Permissions;
 	users: Users;

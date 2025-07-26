@@ -70,6 +70,58 @@ export const PERMISSION_DEFINITIONS: PermissionDefinition[] = [
 		description: 'Eliminar sedes'
 	},
 
+	// Categorías
+	{
+		key: 'categories:read',
+		label: 'Ver categorías',
+		category: 'Administrativo',
+		description: 'Ver categorías del sistema'
+	},
+	{
+		key: 'categories:create',
+		label: 'Crear categorías',
+		category: 'Administrativo',
+		description: 'Crear nuevas categorías'
+	},
+	{
+		key: 'categories:update',
+		label: 'Editar categorías',
+		category: 'Administrativo',
+		description: 'Modificar categorías existentes'
+	},
+	{
+		key: 'categories:delete',
+		label: 'Eliminar categorías',
+		category: 'Administrativo',
+		description: 'Eliminar categorías'
+	},
+
+	// Marcas
+	{
+		key: 'brands:read',
+		label: 'Ver marcas',
+		category: 'Administrativo',
+		description: 'Ver marcas del sistema'
+	},
+	{
+		key: 'brands:create',
+		label: 'Crear marcas',
+		category: 'Administrativo',
+		description: 'Crear nuevas marcas'
+	},
+	{
+		key: 'brands:update',
+		label: 'Editar marcas',
+		category: 'Administrativo',
+		description: 'Modificar marcas existentes'
+	},
+	{
+		key: 'brands:delete',
+		label: 'Eliminar marcas',
+		category: 'Administrativo',
+		description: 'Eliminar marcas'
+	},
+
 	// Sistema
 	{
 		key: 'system:config',

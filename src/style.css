@@ -85,7 +85,7 @@
 	--color-secondary-content: oklch(98% 0.008 200);
 
 	/* Accent - Elegant purple-indigo */
-	--color-accent: oklch(50% 0.20 280);
+	--color-accent: oklch(50% 0.2 280);
 	--color-accent-content: oklch(98% 0.008 280);
 
 	/* Neutral - Consistent with base blue theme */
@@ -93,14 +93,14 @@
 	--color-neutral-content: oklch(18% 0.025 240);
 
 	/* Semantic colors - Clear and accessible with blue harmony */
-	--color-info: oklch(52% 0.20 220);
+	--color-info: oklch(52% 0.2 220);
 	--color-info-content: oklch(98% 0.008 220);
 
 	--color-success: oklch(48% 0.18 160);
 	/* Harmonious green that complements blue */
 	--color-success-content: oklch(98% 0.008 160);
 
-	--color-warning: oklch(65% 0.20 60);
+	--color-warning: oklch(65% 0.2 60);
 	--color-warning-content: oklch(98% 0.008 60);
 
 	--color-error: oklch(55% 0.24 15);

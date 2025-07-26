@@ -17,16 +17,22 @@ import type { DB } from '$lib/database/types';
 // This automatically handles ColumnType unwrapping and provides clean types
 export type Users = Selectable<DB['users']>;
 export type Branches = Selectable<DB['branches']>;
+export type Brands = Selectable<DB['brands']>;
+export type Categories = Selectable<DB['categories']>;
 export type Permissions = Selectable<DB['permissions']>;
 
 // Insertable types for creating new records
 export type NewUsers = Insertable<DB['users']>;
 export type NewBranches = Insertable<DB['branches']>;
+export type NewBrands = Insertable<DB['brands']>;
+export type NewCategories = Insertable<DB['categories']>;
 export type NewPermissions = Insertable<DB['permissions']>;
 
 // Updateable types for updating existing records
 export type UpdateUsers = Updateable<DB['users']>;
 export type UpdateBranches = Updateable<DB['branches']>;
+export type UpdateBrands = Updateable<DB['brands']>;
+export type UpdateCategories = Updateable<DB['categories']>;
 export type UpdatePermissions = Updateable<DB['permissions']>;
 
 // Re-export database types for internal use
@@ -40,7 +46,7 @@ export type { DB } from '$lib/database/types';
 // VALUE OBJECTS & ENUMS - Domain-specific types
 // ============================================================================
 
-export type EntityType = 'users' | 'branches' | 'permissions';
+export type EntityType = 'users' | 'branches' | 'brands' | 'categories' | 'permissions';
 
 export type ToastType = 'success' | 'danger' | 'warning' | 'info';
 

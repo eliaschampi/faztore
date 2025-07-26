@@ -6,7 +6,7 @@
 	import { showToast } from '$lib/stores/Toast';
 	import { onMount, onDestroy } from 'svelte';
 	import type { Branches, SimpleUser } from '$lib/types';
-	import { EllipsisVertical, Plus, Minus } from 'lucide-svelte';
+	import { EllipsisVertical, Plus, Minus, School } from 'lucide-svelte';
 
 	import { can } from '$lib/stores/permissions';
 
@@ -196,6 +196,22 @@
 	{#each data.branches as branch (branch.code)}
 		{@render branchItem(branch)}
 	{/each}
+
+	{#if data.branches.length === 0}
+		<div class="empty-state">
+			<div class="empty-state-icon">
+				<School size={48} />
+			</div>
+			<div class="empty-state-title">No hay sedes</div>
+			<div class="empty-state-message">
+				{#if canCreate}
+					Comienza creando tu primera sede
+				{:else}
+					No tienes permisos para ver sedes
+				{/if}
+			</div>
+		</div>
+	{/if}
 </div>
 
 <!-- Modal para crear o editar -->
@@ -218,7 +234,13 @@
 				<fieldset class="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">
 					<legend class="fieldset-legend">Estado</legend>
 					<label class="label" for="state">
-						<input id="state" name="state" type="checkbox" checked="checked" class="toggle toggle-primary" />
+						<input
+							id="state"
+							name="state"
+							type="checkbox"
+							checked={true}
+							class="toggle toggle-primary"
+						/>
 						Activo
 					</label>
 				</fieldset>
