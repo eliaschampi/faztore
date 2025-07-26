@@ -30,6 +30,9 @@ Prerequisites: Docker & Docker Compose
 ./docker.sh logs                     # Logs
 ./docker.sh test                     # Tests
 
+# Sync Packages
+./docker.sh sync                     #Will copy faztore_app node_modules to main host
+
 # Database
 ./docker.sh setup                    # Initialize
 ./docker.sh setup:reset              # Reset
@@ -77,5 +80,6 @@ Docker configures:
 ```bash
 ./docker.sh status
 ./docker.sh logs
+./docker.sh npm run format && ./docker.sh npm run lint && ./docker.sh npm run check
 ./docker.sh setup:reset
 ```
