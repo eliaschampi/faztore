@@ -38,7 +38,7 @@ export const actions: Actions = {
 				.execute();
 			return { success: true };
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Error creando rama';
+			const message = error instanceof Error ? error.message : 'Error creando Sede';
 			return fail(400, { error: message });
 		}
 	},
@@ -67,7 +67,7 @@ export const actions: Actions = {
 
 			return { success: true };
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Error actualizando rama';
+			const message = error instanceof Error ? error.message : 'Error actualizando Sede';
 			return fail(400, { error: message });
 		}
 	},
@@ -82,7 +82,7 @@ export const actions: Actions = {
 
 			return { success: true };
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Error eliminando rama';
+			const message = error instanceof Error ? error.message : 'Error eliminando Sede';
 			return fail(400, { error: message });
 		}
 	}

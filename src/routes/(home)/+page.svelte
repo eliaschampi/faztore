@@ -25,13 +25,13 @@
 	>
 		<div class="card-body p-6">
 			<div class="flex items-center justify-between">
-				<h2 class="card-title text-xl font-semibold">Ramas</h2>
+				<h2 class="card-title text-xl font-semibold">Sedes</h2>
 				<div class="icon-container icon-container-secondary">
 					<School size={24} />
 				</div>
 			</div>
 			<p class="text-4xl font-bold mt-2 animate-fade-in">-</p>
-			<p class="text-sm opacity-70 mt-1">Ramas disponibles</p>
+			<p class="text-sm opacity-70 mt-1">Sedes disponibles</p>
 		</div>
 	</a>
 
@@ -76,8 +76,8 @@
 				<div class="icon-container icon-container-secondary p-4 mb-4">
 					<School size={32} />
 				</div>
-				<h2 class="card-title text-xl font-semibold">Ramas</h2>
-				<p class="text-sm opacity-70 mt-2">Administra las ramas del sistema</p>
+				<h2 class="card-title text-xl font-semibold">Sedes</h2>
+				<p class="text-sm opacity-70 mt-2">Administra las Sedes del sistema</p>
 			</div>
 		</div>
 	</a>

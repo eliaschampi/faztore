@@ -29,7 +29,7 @@ export function showToast(title: string, type: ToastType) {
 		return updatedToasts;
 	});
 
-	// Programar la eliminación automática
+	// ProgSeder la eliminación automática
 	timeouts[id] = setTimeout(() => {
 		removeToast(id);
 	}, TOAST_LIFETIME);

@@ -57,7 +57,7 @@
 		if (nameInput) nameInput.value = branch.name || '';
 		if (stateInput) stateInput.checked = branch.state || false;
 
-		// Cargar usuarios seleccionados de la rama
+		// Cargar usuarios seleccionados de la Sede
 		selectedUsers = branch.users || [];
 
 		fetchUsers();
@@ -106,15 +106,15 @@
 			const res = await response.json();
 
 			if (res.type === 'success') {
-				showToast(`${isEditing ? 'Rama actualizada' : 'Rama creada'} exitosamente`, 'success');
+				showToast(`${isEditing ? 'Sede actualizada' : 'Sede creada'} exitosamente`, 'success');
 				await invalidate('branches:load'); // Unificar tag de invalidación
 				modal?.close();
 				isEditing = false;
 			} else {
-				message = `Ocurrió un error al ${isEditing ? 'actualizar' : 'crear'} la rama`;
+				message = `Ocurrió un error al ${isEditing ? 'actualizar' : 'crear'} la Sede`;
 			}
 		} catch {
-			message = `Ocurrió un error al ${isEditing ? 'actualizar' : 'crear'} la rama`;
+			message = `Ocurrió un error al ${isEditing ? 'actualizar' : 'crear'} la Sede`;
 		}
 	}
 
@@ -174,20 +174,20 @@
 			selectedBranch = null;
 
 			if (res.type === 'success') {
-				showToast('Rama eliminada exitosamente', 'success');
+				showToast('Sede eliminada exitosamente', 'success');
 				await invalidate('branches:load');
 			} else {
-				showToast(res.error || 'Error al eliminar la rama', 'danger');
+				showToast(res.error || 'Error al eliminar la Sede', 'danger');
 			}
 		} catch {
-			showToast('Error en la eliminación de la rama', 'danger');
+			showToast('Error en la eliminación de la Sede', 'danger');
 		}
 	}
 </script>
 
 <PageTitle
-	title="Ramas"
-	description="Aquí encontrarás todas las ramas disponibles en la aplicación."
+	title="Sedes"
+	description="Aquí encontrarás todas las Sedes disponibles en la aplicación."
 >
 	<button class="btn btn-primary" onclick={openCreateModal} disabled={!canCreate}>Añadir</button>
 </PageTitle>
@@ -202,7 +202,7 @@
 <dialog bind:this={modal} class="modal">
 	<div class="modal-box">
 		<form onsubmit={handleSubmit} autocomplete="off">
-			<h3 class="text-lg font-bold">{isEditing ? 'Editar' : 'Crear'} rama</h3>
+			<h3 class="text-lg font-bold">{isEditing ? 'Editar' : 'Crear'} Sede</h3>
 			<fieldset class="fieldset bg-base-200 border border-base-300 p-4 rounded-box">
 				<label class="fieldset-legend" for="name">Nombre</label>
 				<input
@@ -287,7 +287,7 @@
 <dialog bind:this={confirmModal} class="modal bg-base-200">
 	<div class="modal-box">
 		<h3 class="text-lg font-bold">Confirmar eliminación</h3>
-		<p class="py-4">¿Estás seguro que deseas eliminar la rama "{selectedBranch?.name}"?</p>
+		<p class="py-4">¿Estás seguro que deseas eliminar la Sede "{selectedBranch?.name}"?</p>
 		<div class="modal-action flex justify-center gap-2">
 			<button class="btn" onclick={() => confirmModal?.close()}>Cancelar</button>
 			<button class="btn btn-error" onclick={handleDelete}>Eliminar</button>
