@@ -45,6 +45,11 @@ export async function getUserPermissions(db: Database, userCode: string): Promis
 				'brands:create',
 				'brands:update',
 				'brands:delete',
+				// Products
+				'products:read',
+				'products:create',
+				'products:update',
+				'products:delete',
 				// System
 				'system:config'
 			];

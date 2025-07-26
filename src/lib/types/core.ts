@@ -19,6 +19,7 @@ export type Users = Selectable<DB['users']>;
 export type Branches = Selectable<DB['branches']>;
 export type Brands = Selectable<DB['brands']>;
 export type Categories = Selectable<DB['categories']>;
+export type Products = Selectable<DB['products']>;
 export type Permissions = Selectable<DB['permissions']>;
 
 // Insertable types for creating new records
@@ -26,6 +27,7 @@ export type NewUsers = Insertable<DB['users']>;
 export type NewBranches = Insertable<DB['branches']>;
 export type NewBrands = Insertable<DB['brands']>;
 export type NewCategories = Insertable<DB['categories']>;
+export type NewProducts = Insertable<DB['products']>;
 export type NewPermissions = Insertable<DB['permissions']>;
 
 // Updateable types for updating existing records
@@ -33,6 +35,7 @@ export type UpdateUsers = Updateable<DB['users']>;
 export type UpdateBranches = Updateable<DB['branches']>;
 export type UpdateBrands = Updateable<DB['brands']>;
 export type UpdateCategories = Updateable<DB['categories']>;
+export type UpdateProducts = Updateable<DB['products']>;
 export type UpdatePermissions = Updateable<DB['permissions']>;
 
 // Re-export database types for internal use
@@ -41,6 +44,13 @@ export type { DB } from '$lib/database/types';
 // ============================================================================
 // BUSINESS DOMAIN TYPES - Application-specific extensions
 // ============================================================================
+
+// Product image interface for multiple images support
+export interface ProductImage {
+	url: string;
+	alt?: string;
+	isPrimary?: boolean;
+}
 
 // ============================================================================
 // VALUE OBJECTS & ENUMS - Domain-specific types

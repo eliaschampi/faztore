@@ -122,6 +122,32 @@ export const PERMISSION_DEFINITIONS: PermissionDefinition[] = [
 		description: 'Eliminar marcas'
 	},
 
+	// Productos
+	{
+		key: 'products:read',
+		label: 'Ver productos',
+		category: 'Productos',
+		description: 'Ver productos del sistema'
+	},
+	{
+		key: 'products:create',
+		label: 'Crear productos',
+		category: 'Productos',
+		description: 'Crear nuevos productos'
+	},
+	{
+		key: 'products:update',
+		label: 'Editar productos',
+		category: 'Productos',
+		description: 'Modificar productos existentes'
+	},
+	{
+		key: 'products:delete',
+		label: 'Eliminar productos',
+		category: 'Productos',
+		description: 'Eliminar productos'
+	},
+
 	// Sistema
 	{
 		key: 'system:config',
