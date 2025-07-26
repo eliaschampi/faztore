@@ -67,6 +67,15 @@ class Database {
 			return false;
 		}
 	}
+
+	async resetDatabase(): Promise<void> {
+		await this.query(`
+			DROP SCHEMA public CASCADE;
+			CREATE SCHEMA public;
+			GRANT ALL ON SCHEMA public TO postgres;
+			GRANT ALL ON SCHEMA public TO public;
+		`);
+	}
 }
 
 async function ensureMigrationsTable(db: Database): Promise<void> {
@@ -290,6 +299,15 @@ async function run(args: string[]): Promise<void> {
 				console.log(hasTables.toString());
 				break;
 			}
+			case 'reset': {
+				if (!(await db.checkConnection())) {
+					console.log('Database connection failed');
+					process.exit(1);
+				}
+				await db.resetDatabase();
+				console.log('Database reset completed');
+				break;
+			}
 
 			case 'help':
 			default:
@@ -304,6 +322,7 @@ Commands:
   create <name>     Create migration
   check             Check connection
   check:tables      Check tables exist
+  reset             Reset database (destroys all data)
 `);
 				break;
 		}

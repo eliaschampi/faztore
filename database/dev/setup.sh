@@ -32,7 +32,7 @@ wait_for_db() {
     log "Waiting for database connection..."
     local attempt=1
     while [ $attempt -le 30 ]; do
-        if PGPASSWORD=postgres psql -h postgres -U postgres -d faztore -c "SELECT 1;" >/dev/null 2>&1; then
+        if tsx database/dev/migrate.ts check >/dev/null 2>&1; then
             success "Database connection established"
             return 0
         fi
@@ -46,8 +46,8 @@ wait_for_db() {
 
 is_db_initialized() {
     log "Checking if database is initialized..."
-    # Check if users table exists (core application table)
-    if PGPASSWORD=postgres psql -h postgres -U postgres -d faztore -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'users' AND table_schema = 'public';" 2>/dev/null | grep -q "1"; then
+    # Check if any tables exist (if tables exist, database is initialized)
+    if tsx database/dev/migrate.ts check:tables 2>/dev/null | grep -q "true"; then
         success "Database is already initialized"
         return 0
     else
@@ -58,20 +58,12 @@ is_db_initialized() {
 
 init_database() {
     log "Initializing database with SQL files..."
-
-    # Execute all SQL files in order
-    for sql_file in database/init/*.sql; do
-        if [ -f "$sql_file" ]; then
-            log "Executing $(basename "$sql_file")..."
-            if PGPASSWORD=postgres psql -h postgres -U postgres -d faztore -f "$sql_file" >/dev/null 2>&1; then
-                success "✓ $(basename "$sql_file")"
-            else
-                error "✗ Failed to execute $(basename "$sql_file")"
-                return 1
-            fi
-        fi
-    done
-    success "Database initialization completed"
+    if tsx database/dev/migrate.ts init >/dev/null 2>&1; then
+        success "Database initialization completed"
+    else
+        error "Database initialization failed"
+        return 1
+    fi
 }
 
 run_migrations() {
@@ -151,14 +143,13 @@ reset_database() {
     read -p "Are you sure? Type 'yes' to confirm: " -r
     if [[ $REPLY == "yes" ]]; then
         log "Dropping all tables..."
-        PGPASSWORD=postgres psql -h postgres -U postgres -d faztore -c "
-            DROP SCHEMA public CASCADE;
-            CREATE SCHEMA public;
-            GRANT ALL ON SCHEMA public TO postgres;
-            GRANT ALL ON SCHEMA public TO public;
-        " >/dev/null 2>&1
-        success "Database reset completed"
-        log "Run './docker.sh setup' to reinitialize"
+        if tsx database/dev/migrate.ts reset >/dev/null 2>&1; then
+            success "Database reset completed"
+            log "Run './docker.sh setup' to reinitialize"
+        else
+            error "Database reset failed"
+            return 1
+        fi
     else
         log "Reset cancelled"
     fi

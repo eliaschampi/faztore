@@ -3,72 +3,71 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from 'kysely';
+import type { ColumnType } from "kysely";
 
-export type Generated<T> =
-	T extends ColumnType<infer S, infer I, infer U>
-		? ColumnType<S, I | undefined, U>
-		: ColumnType<T, T | undefined, T>;
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface Branches {
-	code: Generated<string>;
-	created_at: Generated<Timestamp | null>;
-	name: string;
-	state: boolean;
-	users: string[];
+  code: Generated<string>;
+  created_at: Generated<Timestamp | null>;
+  name: string;
+  state: boolean;
+  users: string[];
 }
 
 export interface Brands {
-	code: Generated<string>;
-	created_at: Generated<Timestamp>;
-	description: string | null;
-	name: string;
-	updated_at: Generated<Timestamp>;
+  code: Generated<string>;
+  created_at: Generated<Timestamp>;
+  description: string | null;
+  name: string;
+  updated_at: Generated<Timestamp>;
 }
 
 export interface Categories {
-	code: Generated<string>;
-	created_at: Generated<Timestamp>;
-	description: string | null;
-	name: string;
-	updated_at: Generated<Timestamp>;
+  code: Generated<string>;
+  created_at: Generated<Timestamp>;
+  description: string | null;
+  name: string;
+  updated_at: Generated<Timestamp>;
 }
 
 export interface Migrations {
-	batch: number;
-	executed_at: Generated<Timestamp>;
-	id: string;
-	name: string;
+  batch: number;
+  executed_at: Generated<Timestamp>;
+  id: string;
+  name: string;
 }
 
 export interface Permissions {
-	action: string;
-	code: Generated<string>;
-	created_at: Generated<Timestamp>;
-	entity: string;
-	user_code: string;
+  action: string;
+  code: Generated<string>;
+  created_at: Generated<Timestamp>;
+  entity: string;
+  user_code: string;
 }
 
 export interface Users {
-	code: Generated<string>;
-	created_at: Generated<Timestamp>;
-	email: string;
-	is_super_admin: Generated<boolean>;
-	last_login: Timestamp | null;
-	last_name: string | null;
-	name: string | null;
-	password_hash: string;
-	photo_url: string | null;
-	updated_at: Generated<Timestamp>;
+  code: Generated<string>;
+  created_at: Generated<Timestamp>;
+  email: string;
+  is_super_admin: Generated<boolean>;
+  last_login: Timestamp | null;
+  last_name: string | null;
+  name: string | null;
+  password_hash: string;
+  photo_url: string | null;
+  updated_at: Generated<Timestamp>;
 }
 
 export interface DB {
-	branches: Branches;
-	brands: Brands;
-	categories: Categories;
-	migrations: Migrations;
-	permissions: Permissions;
-	users: Users;
+  branches: Branches;
+  brands: Brands;
+  categories: Categories;
+  migrations: Migrations;
+  permissions: Permissions;
+  users: Users;
 }
