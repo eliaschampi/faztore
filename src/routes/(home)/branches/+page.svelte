@@ -214,11 +214,14 @@
 					placeholder="Ej: Sede Principal, Sucursal Norte, etc."
 					maxlength={100}
 				/>
-				<div class="mt-2">
-					<label class="font-medium" for="state">Estado</label>
-					<input id="state" name="state" type="checkbox" class="checkbox" checked />
-					<span class="ml-2">Activo</span>
-				</div>
+
+				<fieldset class="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">
+					<legend class="fieldset-legend">Estado</legend>
+					<label class="label" for="state">
+						<input id="state" name="state" type="checkbox" checked="checked" class="toggle toggle-primary" />
+						Activo
+					</label>
+				</fieldset>
 
 				<!-- Gestión de usuarios -->
 				<div class="mt-4">
