@@ -43,13 +43,7 @@ cmd_npm() {
     docker exec -it "${PROJECT_NAME}_app" npm "$@"
 }
 
-cmd_sync() {
-    docker run --rm -d --name temp_sync -v faztore_node_modules:/app/node_modules alpine:latest sleep 30
-    [ -d "./node_modules" ] && rm -rf ./node_modules
-    docker cp temp_sync:/app/node_modules ./
-    chown -R $(id -u):$(id -g) ./node_modules 2>/dev/null || true
-    docker stop temp_sync >/dev/null 2>&1 || true
-}
+
 
 cmd_db_shell() {
     docker exec -it "${PROJECT_NAME}_postgres" psql -U postgres -d "$PROJECT_NAME"
@@ -122,7 +116,6 @@ Commands:
   status          Show status
   shell           App shell
   npm             Run npm commands
-  sync            Sync node_modules for VS Code
   test            Run tests
 
 Database:
@@ -150,7 +143,6 @@ main() {
         "status")       cmd_status ;;
         "shell")        cmd_shell ;;
         "npm")          cmd_npm "$@" ;;
-        "sync")         cmd_sync ;;
         "test")         cmd_test ;;
         "setup")        cmd_setup ;;
         "setup:reset")  cmd_setup_reset ;;

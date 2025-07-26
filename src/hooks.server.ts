@@ -4,8 +4,6 @@ import { getSession } from '$lib/auth/session';
 import { dbInstance } from '$lib/config/server';
 import { getUserPermissions, hasPermission } from '$lib/permissions/server';
 
-// Create database instance with environment variables (server-only)
-
 // Database handle - attach database instance to locals
 const databaseHandle: Handle = async ({ event, resolve }) => {
 	event.locals.db = dbInstance;
