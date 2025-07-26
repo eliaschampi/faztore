@@ -1,50 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { Users, School, Activity, UserRound, UserCog } from 'lucide-svelte';
-	import { showToast } from '$lib/stores/Toast';
-
-	// State
-	let isLoading = $state(true);
-	let counts = $state<{
-		users: number;
-		branches: number;
-		permissions: number;
-	}>({
-		users: 0,
-		branches: 0,
-		permissions: 0
-	});
-
-	// Load data on mount
-	onMount(() => {
-		const loadData = async () => {
-			try {
-				// Load basic counts
-				const countsResponse = await fetch('/api/dashboard/counts');
-
-				if (!countsResponse.ok) {
-					throw new Error('Error al cargar datos de conteos');
-				}
-
-				// Parse response
-				const countsData = await countsResponse.json();
-
-				// Validate data
-				if (typeof countsData === 'object' && countsData !== null) {
-					counts = countsData;
-				} else {
-					showToast('Formato de datos de conteos inválido', 'danger');
-				}
-			} catch {
-				showToast('Error al cargar datos del dashboard', 'danger');
-			} finally {
-				isLoading = false;
-			}
-		};
-
-		// Start loading data
-		loadData();
-	});
 </script>
 
 <!-- Stats Cards -->
@@ -58,13 +13,7 @@
 					<Users size={24} />
 				</div>
 			</div>
-			{#if isLoading}
-				<div class="flex justify-center items-center py-2">
-					<span class="loading loading-spinner loading-md text-primary"></span>
-				</div>
-			{:else}
-				<p class="text-4xl font-bold mt-2 animate-fade-in">{counts.users.toLocaleString()}</p>
-			{/if}
+			<p class="text-4xl font-bold mt-2 animate-fade-in">-</p>
 			<p class="text-sm opacity-70 mt-1">Total de usuarios registrados</p>
 		</div>
 	</a>
@@ -81,13 +30,7 @@
 					<School size={24} />
 				</div>
 			</div>
-			{#if isLoading}
-				<div class="flex justify-center items-center py-2">
-					<span class="loading loading-spinner loading-md text-secondary"></span>
-				</div>
-			{:else}
-				<p class="text-4xl font-bold mt-2 animate-fade-in">{counts.branches.toLocaleString()}</p>
-			{/if}
+			<p class="text-4xl font-bold mt-2 animate-fade-in">-</p>
 			<p class="text-sm opacity-70 mt-1">Ramas disponibles</p>
 		</div>
 	</a>
@@ -101,13 +44,7 @@
 					<Activity size={24} />
 				</div>
 			</div>
-			{#if isLoading}
-				<div class="flex justify-center items-center py-2">
-					<span class="loading loading-spinner loading-md text-accent"></span>
-				</div>
-			{:else}
-				<p class="text-4xl font-bold mt-2 animate-fade-in">{counts.permissions.toLocaleString()}</p>
-			{/if}
+			<p class="text-4xl font-bold mt-2 animate-fade-in">-</p>
 			<p class="text-sm opacity-70 mt-1">Permisos asignados</p>
 		</div>
 	</a>
