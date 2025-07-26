@@ -19,7 +19,7 @@
 		location?: string;
 	}
 
-	interface LevelWithUsers {
+	interface branchWithUsers {
 		code: string;
 		name: string;
 		created_at: string;
@@ -28,7 +28,7 @@
 
 	type ProfileProps = {
 		data: {
-			branches: LevelWithUsers[];
+			branches: branchWithUsers[];
 			user: Users | null;
 		};
 	};
@@ -190,7 +190,7 @@
 					{:else}
 						<div class="w-full">
 							<ul class="divide-y divide-base-300/30 rounded-lg bg-base-100/50 shadow">
-								{#each data.branches as level (level.code)}
+								{#each data.branches as branch (branch.code)}
 									<li
 										class="flex items-center justify-between py-3.5 px-4 hover:bg-base-200/50 transition-colors"
 									>
@@ -201,14 +201,14 @@
 												<Activity class="w-4 h-4 text-primary" />
 											</div>
 											<div>
-												<div class="font-medium">{level.name}</div>
+												<div class="font-medium">{branch.name}</div>
 												<div class="text-xs text-base-content/60">
-													Año: {new Date(level.created_at).getFullYear()}
+													Año: {new Date(branch.created_at).getFullYear()}
 												</div>
 											</div>
 										</div>
 										<div class="badge badge-primary badge-outline">
-											{level.users?.length || 0} Usuarios
+											{branch.users?.length || 0} Usuarios
 										</div>
 									</li>
 								{/each}

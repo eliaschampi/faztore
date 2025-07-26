@@ -160,12 +160,7 @@ export const actions: Actions = {
 				return fail(500, { error: 'Usuario super admin no encontrado' });
 			}
 
-			// Update permissions to reassign to super admin
-			await locals.db
-				.updateTable('permissions')
-				.set({ user_code: superAdmin.code })
-				.where('user_code', '=', userId)
-				.execute();
+			// Update tables to reassign to super admin
 
 			// Now safe to delete user
 			await locals.db

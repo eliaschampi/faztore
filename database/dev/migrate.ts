@@ -4,6 +4,7 @@ import { promises as fs } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { Pool } from 'pg';
+import { devDbConfig } from '../../src/lib/database/index.js';
 
 interface MigrationFile {
 	id: string;
@@ -25,19 +26,11 @@ const PROJECT_ROOT = join(__dirname, '../..');
 const INIT_DIR = join(PROJECT_ROOT, 'database/init');
 const MIGRATIONS_DIR = join(PROJECT_ROOT, 'database/migrations');
 
-const DB_CONFIG = {
-	host: process.env.DB_HOST || 'localhost',
-	port: parseInt(process.env.DB_PORT || '5432'),
-	database: process.env.DB_NAME || 'faztore',
-	user: process.env.DB_USER || 'postgres',
-	password: process.env.DB_PASSWORD || 'postgres'
-};
-
 class Database {
 	private pool: Pool;
 
 	constructor() {
-		this.pool = new Pool(DB_CONFIG);
+		this.pool = new Pool(devDbConfig);
 	}
 
 	async query(text: string, params?: unknown[]): Promise<unknown> {

@@ -1,7 +1,15 @@
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 import type { DB } from './types';
-import { dev } from '$app/environment';
+
+// Simple shared config for development tools (no SvelteKit dependencies)
+export const devDbConfig = {
+	host: process.env.DB_HOST || 'localhost',
+	user: process.env.DB_USER || 'postgres',
+	password: process.env.DB_PASSWORD || 'postgres',
+	database: process.env.DB_NAME || 'faztore',
+	port: parseInt(process.env.DB_PORT || '5432')
+};
 
 // Database factory function that accepts configuration
 export function createDatabase(config: {
@@ -14,7 +22,7 @@ export function createDatabase(config: {
 	// Create connection pool
 	const pool = new Pool({
 		...config,
-		max: dev ? 10 : 20,
+		max: process.env.NODE_ENV === 'development' ? 10 : 20,
 		idleTimeoutMillis: 30000,
 		connectionTimeoutMillis: 10000
 	});
@@ -23,7 +31,7 @@ export function createDatabase(config: {
 	const database = new Kysely<DB>({
 		dialect: new PostgresDialect({ pool }),
 		log: (event) => {
-			if (dev && event.level === 'query') {
+			if (process.env.NODE_ENV === 'development' && event.level === 'query') {
 				// console.log('SQL:', event.query.sql);
 				console.log('Parameters:', event.query.parameters);
 			}

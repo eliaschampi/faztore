@@ -7,6 +7,6 @@ export const GET: RequestHandler = async ({ locals }) => {
 		return json({ error: 'No Autorizado' }, { status: 401 });
 	}
 
-	const levels = await getBranches(locals.db, locals.user.code);
-	return json({ levels });
+	const branches = await getBranches(locals.db, locals.user.code);
+	return json({ branches });
 };
