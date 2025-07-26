@@ -1,6 +1,6 @@
 FROM node:20-alpine
 WORKDIR /app
-RUN apk add --no-cache bash postgresql-client
+RUN apk add --no-cache bash postgresql-client git
 COPY package*.json ./
 RUN npm install
 # Pre-install tsx globally to avoid interactive prompts
