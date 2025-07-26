@@ -61,7 +61,6 @@ export interface Users {
 	name: string | null;
 	password_hash: string;
 	photo_url: string | null;
-	test_column: Generated<string | null>;
 	updated_at: Generated<Timestamp>;
 }
 

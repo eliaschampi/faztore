@@ -61,12 +61,8 @@ cmd_setup() {
 }
 
 cmd_setup_reset() {
-    read -p "Reset database? This destroys all data (y/N): " -n 1 -r; echo
-    [[ $REPLY =~ ^[Yy]$ ]] || { echo "Cancelled"; exit 0; }
-    docker-compose down -v
-    docker-compose up -d
-    sleep 5
-    docker exec -it "${PROJECT_NAME}_app" npm run setup
+    check_containers
+    docker exec -it "${PROJECT_NAME}_app" bash database/dev/setup.sh reset
 }
 
 check_containers() {
@@ -130,10 +126,10 @@ Commands:
   test            Run tests
 
 Database:
-  setup           Initialize database
-  setup:reset     Reset database
+  setup           Initialize database (runs all SQL files + migrations)
+  setup:reset     Reset database (destroys all data)
   db:shell        PostgreSQL shell
-  db:migrate      Run migrations
+  db:migrate      Run migrations only
   db:rollback     Rollback migrations
   db:status       Migration status
   db:generate     Generate types

@@ -20,7 +20,5 @@ export default {
 	dialect: 'postgres' as const,
 	url: `postgresql://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`,
 	outFile: 'src/lib/database/types.ts',
-	camelCase: false,
-	// Exclude system schemas and focus on public schema
-	excludePattern: '^(information_schema|pg_.*|auth\\..*|storage\\..*|realtime\\..*)$'
+	camelCase: false
 };

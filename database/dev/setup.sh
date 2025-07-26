@@ -1,56 +1,179 @@
 #!/bin/bash
 set -e
 
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+log() {
+    echo -e "${BLUE}[SETUP]${NC} $1"
+}
+
+error() {
+    echo -e "${RED}[ERROR]${NC} $1" >&2
+}
+
+success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+warn() {
+    echo -e "${YELLOW}[WARN]${NC} $1"
+}
+
 is_container() {
     [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null
 }
 
 wait_for_db() {
+    log "Waiting for database connection..."
     local attempt=1
     while [ $attempt -le 30 ]; do
-        if npx tsx database/dev/migrate.ts check >/dev/null 2>&1; then
+        if PGPASSWORD=postgres psql -h postgres -U postgres -d faztore -c "SELECT 1;" >/dev/null 2>&1; then
+            success "Database connection established"
             return 0
         fi
+        log "Attempt $attempt/30 - waiting for database..."
         sleep 2
         ((attempt++))
     done
+    error "Database connection failed after 30 attempts"
     return 1
 }
 
 is_db_initialized() {
-    npx tsx database/dev/migrate.ts check:tables >/dev/null 2>&1
-}
-
-setup_database() {
-    is_container || { echo "Must run inside container. Use: ./docker.sh setup"; exit 1; }
-    wait_for_db || { echo "Cannot connect to database"; exit 1; }
-
-    if is_db_initialized; then
-        npm run db:migrate
-        npm run db:generate
+    log "Checking if database is initialized..."
+    # Check if users table exists (core application table)
+    if PGPASSWORD=postgres psql -h postgres -U postgres -d faztore -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'users' AND table_schema = 'public';" 2>/dev/null | grep -q "1"; then
+        success "Database is already initialized"
+        return 0
     else
-        npm run db:init
-        npm run db:migrate
-        npm run db:generate
+        log "Database needs initialization"
+        return 1
     fi
 }
 
+init_database() {
+    log "Initializing database with SQL files..."
+
+    # Execute all SQL files in order
+    for sql_file in database/init/*.sql; do
+        if [ -f "$sql_file" ]; then
+            log "Executing $(basename "$sql_file")..."
+            if PGPASSWORD=postgres psql -h postgres -U postgres -d faztore -f "$sql_file" >/dev/null 2>&1; then
+                success "✓ $(basename "$sql_file")"
+            else
+                error "✗ Failed to execute $(basename "$sql_file")"
+                return 1
+            fi
+        fi
+    done
+    success "Database initialization completed"
+}
+
+run_migrations() {
+    log "Running database migrations..."
+    if tsx database/dev/migrate.ts migrate; then
+        success "Migrations completed"
+    else
+        error "Migrations failed"
+        return 1
+    fi
+}
+
+generate_types() {
+    log "Generating TypeScript types..."
+    if npm run db:generate >/dev/null 2>&1; then
+        success "Types generated successfully"
+    else
+        error "Type generation failed"
+        return 1
+    fi
+}
+
+setup_database() {
+    log "Starting database setup..."
+
+    # Check if running in container
+    if ! is_container; then
+        error "Must run inside container. Use: ./docker.sh setup"
+        exit 1
+    fi
+
+    # Wait for database
+    if ! wait_for_db; then
+        error "Cannot connect to database"
+        exit 1
+    fi
+
+    # Initialize or migrate
+    if is_db_initialized; then
+        log "Database already initialized, running migrations only..."
+        run_migrations
+        generate_types
+    else
+        log "Fresh database detected, running full initialization..."
+        init_database
+        run_migrations
+        generate_types
+    fi
+
+    success "Database setup completed successfully!"
+}
+
 show_status() {
-    if wait_for_db >/dev/null 2>&1; then
-        if is_db_initialized; then
-            npm run db:status 2>/dev/null || echo "Migration system not initialized"
+    log "Checking database status..."
+
+    if ! wait_for_db >/dev/null 2>&1; then
+        error "Database connection failed. Run: ./docker.sh up"
+        return 1
+    fi
+
+    if is_db_initialized >/dev/null 2>&1; then
+        success "Database is initialized"
+        log "Running migration status check..."
+        if tsx database/dev/migrate.ts status 2>/dev/null; then
+            success "Migration status retrieved"
         else
-            echo "Database not initialized. Run: ./docker.sh setup"
+            warn "Migration system not fully initialized"
         fi
     else
-        echo "Database connection failed. Run: ./docker.sh up"
+        warn "Database not initialized. Run: ./docker.sh setup"
+    fi
+}
+
+reset_database() {
+    log "Resetting database..."
+    warn "This will destroy ALL data!"
+    read -p "Are you sure? Type 'yes' to confirm: " -r
+    if [[ $REPLY == "yes" ]]; then
+        log "Dropping all tables..."
+        PGPASSWORD=postgres psql -h postgres -U postgres -d faztore -c "
+            DROP SCHEMA public CASCADE;
+            CREATE SCHEMA public;
+            GRANT ALL ON SCHEMA public TO postgres;
+            GRANT ALL ON SCHEMA public TO public;
+        " >/dev/null 2>&1
+        success "Database reset completed"
+        log "Run './docker.sh setup' to reinitialize"
+    else
+        log "Reset cancelled"
     fi
 }
 
 case "${1:-setup}" in
     "setup"|"init") setup_database ;;
     "status") show_status ;;
+    "reset") reset_database ;;
     *)
-        echo "Usage: bash database/dev/setup.sh [setup|status]"
+        echo "Usage: bash database/dev/setup.sh [setup|status|reset]"
+        echo ""
+        echo "Commands:"
+        echo "  setup   - Initialize database and run migrations"
+        echo "  status  - Show database and migration status"
+        echo "  reset   - Reset database (destroys all data)"
         ;;
 esac
