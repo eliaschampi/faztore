@@ -41,3 +41,47 @@ CREATE TABLE public.branches (
   users UUID[] NOT NULL,
   CONSTRAINT branches_pk PRIMARY KEY (code)
 );
+
+-- Categories table
+CREATE TABLE public.categories (
+  code UUID NOT NULL DEFAULT gen_random_uuid(),
+  name VARCHAR(100) NOT NULL,
+  description TEXT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT categories_pk PRIMARY KEY (code),
+  CONSTRAINT categories_name_uq UNIQUE (name)
+);
+
+-- Brands table
+CREATE TABLE public.brands (
+  code UUID NOT NULL DEFAULT gen_random_uuid(),
+  name VARCHAR(100) NOT NULL,
+  description TEXT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT brands_pk PRIMARY KEY (code),
+  CONSTRAINT brands_name_uq UNIQUE (name)
+);
+
+-- Products table with multiple images support
+CREATE TABLE public.products (
+  code UUID NOT NULL DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  description TEXT NULL,
+  brand_code UUID NOT NULL,
+  category_code UUID NOT NULL,
+  user_code UUID NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  sku VARCHAR(100) NULL,
+  images JSONB NOT NULL DEFAULT '[]'::jsonb,
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT products_pk PRIMARY KEY (code),
+  CONSTRAINT products_brand_fk FOREIGN KEY (brand_code) REFERENCES public.brands (code) ON DELETE RESTRICT,
+  CONSTRAINT products_category_fk FOREIGN KEY (category_code) REFERENCES public.categories (code) ON DELETE RESTRICT,
+  CONSTRAINT products_user_fk FOREIGN KEY (user_code) REFERENCES public.users (code) ON DELETE RESTRICT,
+  CONSTRAINT products_sku_uq UNIQUE (sku),
+  CONSTRAINT products_price_check CHECK (price >= 0)
+);
