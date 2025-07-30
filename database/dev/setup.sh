@@ -139,13 +139,21 @@ show_status() {
 
 reset_database() {
     log "Resetting database..."
-    warn "This will destroy ALL data!"
+    warn "This will destroy ALL data and reset to initial state!"
     read -p "Are you sure? Type 'yes' to confirm: " -r
     if [[ $REPLY == "yes" ]]; then
-        log "Dropping all tables..."
+        log "Dropping all tables and schema..."
         if tsx database/dev/migrate.ts reset >/dev/null 2>&1; then
             success "Database reset completed"
-            log "Run './docker.sh setup' to reinitialize"
+            log "Reinitializing database with init files..."
+            if init_database && run_migrations && generate_types; then
+                success "Database fully reinitialized!"
+                log "All init files applied, migrations table is empty"
+                log "Ready for new migrations"
+            else
+                error "Failed to reinitialize database after reset"
+                return 1
+            fi
         else
             error "Database reset failed"
             return 1

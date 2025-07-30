@@ -3,18 +3,19 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from "kysely";
+import type { ColumnType } from 'kysely';
 
-export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
-  ? ColumnType<S, I | undefined, U>
-  : ColumnType<T, T | undefined, T>;
+export type Generated<T> =
+	T extends ColumnType<infer S, infer I, infer U>
+		? ColumnType<S, I | undefined, U>
+		: ColumnType<T, T | undefined, T>;
 
 export type Json = JsonValue;
 
 export type JsonArray = JsonValue[];
 
 export type JsonObject = {
-  [x: string]: JsonValue | undefined;
+	[x: string]: JsonValue | undefined;
 };
 
 export type JsonPrimitive = boolean | number | string | null;
@@ -26,98 +27,102 @@ export type Numeric = ColumnType<string, number | string, number | string>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface Branches {
-  code: Generated<string>;
-  created_at: Generated<Timestamp | null>;
-  name: string;
-  state: boolean;
-  users: string[];
+	code: Generated<string>;
+	created_at: Generated<Timestamp | null>;
+	name: string;
+	state: boolean;
+	users: string[];
 }
 
 export interface Brands {
-  code: Generated<string>;
-  created_at: Generated<Timestamp>;
-  description: string | null;
-  name: string;
-  updated_at: Generated<Timestamp>;
+	code: Generated<string>;
+	created_at: Generated<Timestamp>;
+	description: string | null;
+	name: string;
+	updated_at: Generated<Timestamp>;
 }
 
 export interface Categories {
-  code: Generated<string>;
-  created_at: Generated<Timestamp>;
-  description: string | null;
-  name: string;
-  updated_at: Generated<Timestamp>;
+	code: Generated<string>;
+	created_at: Generated<Timestamp>;
+	description: string | null;
+	name: string;
+	updated_at: Generated<Timestamp>;
 }
 
 export interface Migrations {
-  batch: number;
-  executed_at: Generated<Timestamp>;
-  id: string;
-  name: string;
+	batch: number;
+	executed_at: Generated<Timestamp>;
+	id: string;
+	name: string;
 }
 
 export interface Permissions {
-  action: string;
-  code: Generated<string>;
-  created_at: Generated<Timestamp>;
-  entity: string;
-  user_code: string;
+	action: string;
+	code: Generated<string>;
+	created_at: Generated<Timestamp>;
+	entity: string;
+	user_code: string;
 }
 
 export interface Products {
-  brand_code: string;
-  category_code: string;
-  code: Generated<string>;
-  created_at: Generated<Timestamp>;
-  description: string | null;
-  images: Generated<Json>;
-  is_active: Generated<boolean>;
-  name: string;
-  price: Numeric;
-  sku: string | null;
-  updated_at: Generated<Timestamp>;
-  user_code: string;
+	brand_code: string;
+	category_code: string;
+	code: Generated<string>;
+	created_at: Generated<Timestamp>;
+	description: string | null;
+	images: Generated<Json>;
+	is_active: Generated<boolean>;
+	name: string;
+	price: Numeric;
+	sku: string | null;
+	updated_at: Generated<Timestamp>;
+	user_code: string;
 }
 
 export interface ProductsOverview {
-  brand_code: string | null;
-  brand_name: string | null;
-  category_code: string | null;
-  category_name: string | null;
-  code: string | null;
-  created_at: Timestamp | null;
-  description: string | null;
-  has_images: boolean | null;
-  images: Json | null;
-  images_count: number | null;
-  is_active: boolean | null;
-  name: string | null;
-  price: Numeric | null;
-  primary_image_url: string | null;
-  sku: string | null;
-  updated_at: Timestamp | null;
+	brand_code: string | null;
+	brand_name: string | null;
+	category_code: string | null;
+	category_name: string | null;
+	code: string | null;
+	created_at: Timestamp | null;
+	description: string | null;
+	has_images: boolean | null;
+	images: Json | null;
+	images_count: number | null;
+	is_active: boolean | null;
+	name: string | null;
+	price: Numeric | null;
+	primary_image_url: string | null;
+	sku: string | null;
+	updated_at: Timestamp | null;
 }
 
 export interface Users {
-  code: Generated<string>;
-  created_at: Generated<Timestamp>;
-  email: string;
-  is_super_admin: Generated<boolean>;
-  last_login: Timestamp | null;
-  last_name: string | null;
-  name: string | null;
-  password_hash: string;
-  photo_url: string | null;
-  updated_at: Generated<Timestamp>;
+	code: Generated<string>;
+	created_at: Generated<Timestamp>;
+	email: string;
+	is_super_admin: Generated<boolean>;
+	last_login: Timestamp | null;
+	last_name: string | null;
+	/**
+	 * Test column for new migration system testing
+	 */
+	migration_test_column: Generated<string | null>;
+	name: string | null;
+	password_hash: string;
+	photo_url: string | null;
+	updated_at: Generated<Timestamp>;
 }
 
 export interface DB {
-  branches: Branches;
-  brands: Brands;
-  categories: Categories;
-  migrations: Migrations;
-  permissions: Permissions;
-  products: Products;
-  products_overview: ProductsOverview;
-  users: Users;
+	branches: Branches;
+	brands: Brands;
+	categories: Categories;
+	migrations: Migrations;
+	permissions: Permissions;
+	products: Products;
+	products_overview: ProductsOverview;
+	users: Users;
 }

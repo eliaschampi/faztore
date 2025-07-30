@@ -8,14 +8,9 @@ export const GET: RequestHandler = async ({ locals }) => {
 	}
 
 	// Get products from the optimized view using raw SQL
-	const products = await locals.db
-		.executeQuery(
-			locals.db
-				.selectFrom('products_overview')
-				.selectAll()
-				.orderBy('name', 'asc')
-				.compile()
-		);
+	const products = await locals.db.executeQuery(
+		locals.db.selectFrom('products_overview').selectAll().orderBy('name', 'asc').compile()
+	);
 
 	return json(products);
 };
