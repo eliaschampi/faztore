@@ -34,8 +34,7 @@ Prerequisites: Docker & Docker Compose
 ./docker.sh sync                     #Will copy faztore_app node_modules to main host
 
 # Database
-./docker.sh setup                    # Initialize
-./docker.sh setup:reset              # Reset
+./docker.sh setup                    # Initialize (init files only, no migrations)
 ./docker.sh db:migrate               # Migrate
 ./docker.sh db:rollback              # Rollback
 ./docker.sh db:status                # Status
@@ -65,6 +64,7 @@ Docker configures:
 ### Setup
 ```bash
 ./docker.sh build && ./docker.sh up && ./docker.sh setup
+./docker.sh db:migrate  # Run migrations manually after setup
 ```
 
 ### Development
@@ -81,5 +81,4 @@ Docker configures:
 ./docker.sh status
 ./docker.sh logs
 ./docker.sh npm run format && ./docker.sh npm run lint && ./docker.sh npm run check
-./docker.sh setup:reset
 ```

@@ -54,10 +54,7 @@ cmd_setup() {
     docker exec -it "${PROJECT_NAME}_app" bash database/dev/setup.sh
 }
 
-cmd_setup_reset() {
-    check_containers
-    docker exec -it "${PROJECT_NAME}_app" bash database/dev/setup.sh reset
-}
+
 
 check_containers() {
     docker-compose ps | grep -q "Up" || { echo "Containers not running. Run: ./docker.sh up"; exit 1; }
@@ -119,8 +116,7 @@ Commands:
   test            Run tests
 
 Database:
-  setup           Initialize database (runs all SQL files + migrations)
-  setup:reset     Reset database (destroys all data)
+  setup           Initialize database (runs init SQL files only, no migrations)
   db:shell        PostgreSQL shell
   db:migrate      Run migrations only
   db:rollback     Rollback migrations
@@ -145,7 +141,6 @@ main() {
         "npm")          cmd_npm "$@" ;;
         "test")         cmd_test ;;
         "setup")        cmd_setup ;;
-        "setup:reset")  cmd_setup_reset ;;
         "db:shell")     cmd_db_shell ;;
         "db:migrate")   cmd_db_migrate ;;
         "db:rollback")  cmd_db_rollback ;;

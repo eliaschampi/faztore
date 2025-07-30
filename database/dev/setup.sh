@@ -66,15 +66,7 @@ init_database() {
     fi
 }
 
-run_migrations() {
-    log "Running database migrations..."
-    if tsx database/dev/migrate.ts migrate; then
-        success "Migrations completed"
-    else
-        error "Migrations failed"
-        return 1
-    fi
-}
+
 
 generate_types() {
     log "Generating TypeScript types..."
@@ -103,13 +95,11 @@ setup_database() {
 
     # Initialize or migrate
     if is_db_initialized; then
-        log "Database already initialized, running migrations only..."
-        run_migrations
+        log "Database already initialized, generating types only..."
         generate_types
     else
-        log "Fresh database detected, running full initialization..."
+        log "Fresh database detected, running initialization..."
         init_database
-        run_migrations
         generate_types
     fi
 
@@ -146,10 +136,9 @@ reset_database() {
         if tsx database/dev/migrate.ts reset >/dev/null 2>&1; then
             success "Database reset completed"
             log "Reinitializing database with init files..."
-            if init_database && run_migrations && generate_types; then
-                success "Database fully reinitialized!"
-                log "All init files applied, migrations table is empty"
-                log "Ready for new migrations"
+            if init_database && generate_types; then
+                success "Database reinitialized (no migrations run)!"
+                log "Init files applied, ready for migrations"
             else
                 error "Failed to reinitialize database after reset"
                 return 1
@@ -171,8 +160,8 @@ case "${1:-setup}" in
         echo "Usage: bash database/dev/setup.sh [setup|status|reset]"
         echo ""
         echo "Commands:"
-        echo "  setup   - Initialize database and run migrations"
+        echo "  setup   - Initialize database (init files only, no migrations)"
         echo "  status  - Show database and migration status"
-        echo "  reset   - Reset database (destroys all data)"
+        echo "  reset   - Reset database (destroys all data, no migrations)"
         ;;
 esac
