@@ -77,7 +77,7 @@
 					<div class="card-body">
 						<h3 class="card-title text-lg mb-4">Información básica</h3>
 						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-							<div class="form-control">
+							<fieldset class="fieldset">
 								<label class="label" for="name">
 									<span class="label-text font-medium">Nombre del producto *</span>
 								</label>
@@ -85,17 +85,15 @@
 									id="name"
 									name="name"
 									type="text"
-									class="input input-bordered"
+									class="input input-bordered w-full"
 									placeholder="Ingresa el nombre del producto"
 									required
 									maxlength="100"
 								/>
-								<div class="label">
-									<span class="label-text-alt text-base-content/60">Máximo 100 caracteres</span>
-								</div>
-							</div>
+								<p class="label text-base-content/60">Máximo 100 caracteres</p>
+							</fieldset>
 
-							<div class="form-control">
+							<fieldset class="fieldset">
 								<label class="label" for="sku">
 									<span class="label-text font-medium">SKU</span>
 								</label>
@@ -103,16 +101,12 @@
 									id="sku"
 									name="sku"
 									type="text"
-									class="input input-bordered"
+									class="input input-bordered w-full"
 									placeholder="Código único del producto"
 									maxlength="50"
 								/>
-								<div class="label">
-									<span class="label-text-alt text-base-content/60"
-										>Código único para identificar el producto</span
-									>
-								</div>
-							</div>
+								<p class="label text-base-content/60">Código único para identificar el producto</p>
+							</fieldset>
 						</div>
 					</div>
 				</div>
@@ -121,22 +115,20 @@
 				<div class="card card-gradient-neutral">
 					<div class="card-body">
 						<h3 class="card-title text-lg mb-4">Descripción</h3>
-						<div class="form-control">
+						<fieldset class="fieldset">
 							<label class="label" for="description">
 								<span class="label-text font-medium">Descripción del producto</span>
 							</label>
 							<textarea
 								id="description"
 								name="description"
-								class="textarea textarea-bordered"
+								class="textarea textarea-bordered w-full"
 								placeholder="Describe las características, beneficios y detalles importantes del producto..."
 								rows="4"
 								maxlength="1000"
 							></textarea>
-							<div class="label">
-								<span class="label-text-alt text-base-content/60">Máximo 1000 caracteres</span>
-							</div>
-						</div>
+							<p class="label text-base-content/60">Máximo 1000 caracteres</p>
+						</fieldset>
 					</div>
 				</div>
 
@@ -145,31 +137,32 @@
 					<div class="card-body">
 						<h3 class="card-title text-lg mb-4">Categorización</h3>
 						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-							<div class="form-control">
+							<fieldset class="fieldset">
 								<label class="label" for="brand_code">
 									<span class="label-text font-medium">Marca *</span>
 								</label>
-								<select id="brand_code" name="brand_code" class="select select-bordered" required>
+								<select
+									id="brand_code"
+									name="brand_code"
+									class="select select-bordered w-full"
+									required
+								>
 									<option value="">Seleccionar marca</option>
 									{#each data.brands as brand (brand.code)}
 										<option value={brand.code}>{brand.name}</option>
 									{/each}
 								</select>
-								<div class="label">
-									<span class="label-text-alt text-base-content/60"
-										>Selecciona la marca del producto</span
-									>
-								</div>
-							</div>
+								<p class="label text-base-content/60">Selecciona la marca del producto</p>
+							</fieldset>
 
-							<div class="form-control">
+							<fieldset class="fieldset">
 								<label class="label" for="category_code">
 									<span class="label-text font-medium">Categoría *</span>
 								</label>
 								<select
 									id="category_code"
 									name="category_code"
-									class="select select-bordered"
+									class="select select-bordered w-full"
 									required
 								>
 									<option value="">Seleccionar categoría</option>
@@ -177,12 +170,8 @@
 										<option value={category.code}>{category.name}</option>
 									{/each}
 								</select>
-								<div class="label">
-									<span class="label-text-alt text-base-content/60"
-										>Categoría a la que pertenece el producto</span
-									>
-								</div>
-							</div>
+								<p class="label text-base-content/60">Categoría a la que pertenece el producto</p>
+							</fieldset>
 						</div>
 					</div>
 				</div>
@@ -192,11 +181,11 @@
 					<div class="card-body">
 						<h3 class="card-title text-lg mb-4">Precio</h3>
 						<div class="max-w-sm">
-							<div class="form-control">
+							<fieldset class="fieldset">
 								<label class="label" for="price">
 									<span class="label-text font-medium">Precio de venta *</span>
 								</label>
-								<div class="join">
+								<div class="join w-full">
 									<span class="join-item btn btn-disabled">$</span>
 									<input
 										id="price"
@@ -209,10 +198,8 @@
 										required
 									/>
 								</div>
-								<div class="label">
-									<span class="label-text-alt text-base-content/60">Precio en la moneda local</span>
-								</div>
-							</div>
+								<p class="label text-base-content/60">Precio en la moneda local</p>
+							</fieldset>
 						</div>
 					</div>
 				</div>

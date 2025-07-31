@@ -201,17 +201,15 @@
 		<!-- Top Row: Search and Actions -->
 		<div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
 			<!-- Search -->
-			<div class="relative flex-1 max-w-md">
-				<Search
-					class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-base-content/50"
-				/>
+			<label class="input">
+				<Search class="w-4 h-4 opacity-50" />
 				<input
 					type="text"
 					placeholder="Buscar productos, SKU, marca..."
-					class="input input-bordered w-full pl-10 pr-4"
+					class="grow"
 					bind:value={searchTerm}
 				/>
-			</div>
+			</label>
 
 			<!-- Action Buttons -->
 			<div class="flex items-center gap-2">
@@ -226,14 +224,16 @@
 						<ChevronDown class="w-3 h-3" />
 					</div>
 					<div
-						class="dropdown-content card card-compact w-80 p-4 shadow-lg bg-base-100 border border-base-300 z-10"
+						class="dropdown-content card w-72 p-4 shadow-lg bg-base-100 border border-base-300 z-10"
 					>
-						<div class="space-y-4">
-							<h3 class="font-semibold text-sm">Filtrar productos</h3>
+						<div class="space-y-3">
+							<h3 class="font-semibold text-sm text-base-content">Filtrar productos</h3>
 
 							<!-- Brand Filter -->
-							<div>
-								<label class="label label-text text-xs font-medium" for="filter-brand">Marca</label>
+							<fieldset class="fieldset">
+								<label class="label" for="filter-brand">
+									<span class="label-text text-xs font-medium">Marca</span>
+								</label>
 								<select
 									id="filter-brand"
 									class="select select-bordered select-sm w-full"
@@ -244,13 +244,13 @@
 										<option value={brand.code}>{brand.name}</option>
 									{/each}
 								</select>
-							</div>
+							</fieldset>
 
 							<!-- Category Filter -->
-							<div>
-								<label class="label label-text text-xs font-medium" for="filter-category"
-									>Categoría</label
-								>
+							<fieldset class="fieldset">
+								<label class="label" for="filter-category">
+									<span class="label-text text-xs font-medium">Categoría</span>
+								</label>
 								<select
 									id="filter-category"
 									class="select select-bordered select-sm w-full"
@@ -261,19 +261,19 @@
 										<option value={category.code}>{category.name}</option>
 									{/each}
 								</select>
-							</div>
+							</fieldset>
 
 							<!-- Show Inactive -->
-							<div class="form-control">
+							<fieldset class="fieldset">
 								<label class="label cursor-pointer justify-start gap-3">
 									<input type="checkbox" class="checkbox checkbox-sm" bind:checked={showInactive} />
-									<span class="label-text text-sm">Mostrar productos inactivos</span>
+									<span class="label-text text-sm">Mostrar inactivos</span>
 								</label>
-							</div>
+							</fieldset>
 
 							<!-- Actions -->
-							<div class="flex justify-between pt-2">
-								<button class="btn btn-ghost btn-sm" onclick={clearFilters}> Limpiar </button>
+							<div class="flex justify-between pt-2 border-t border-base-300">
+								<button class="btn btn-ghost btn-sm" onclick={clearFilters}>Limpiar</button>
 								<button
 									class="btn btn-primary btn-sm"
 									onclick={() => (document.activeElement as HTMLElement)?.blur()}
@@ -287,13 +287,13 @@
 
 				<!-- Sort Dropdown -->
 				<div class="dropdown dropdown-end">
-					<div tabindex="0" role="button" class="btn btn-outline btn-sm gap-2">
+					<div tabindex="0" role="button" class="btn btn-soft btn-primary btn-sm gap-2">
 						{@render sortIcon()}
 						Ordenar
 						<ChevronDown class="w-3 h-3" />
 					</div>
 					<ul
-						class="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-lg border border-base-300 z-10"
+						class="dropdown-content menu bg-base-200 rounded-box w-52 p-2 shadow-lg border border-base-300 z-10"
 					>
 						<li>
 							{@render sortButton('name', 'Nombre')}
