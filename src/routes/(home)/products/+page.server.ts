@@ -17,9 +17,23 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 			.orderBy('name', 'asc')
 			.execute();
 
-		return { products, title: 'Productos' };
+		// Get brands for filter dropdown
+		const brands = await locals.db
+			.selectFrom('brands')
+			.select(['code', 'name'])
+			.orderBy('name', 'asc')
+			.execute();
+
+		// Get categories for filter dropdown
+		const categories = await locals.db
+			.selectFrom('categories')
+			.select(['code', 'name'])
+			.orderBy('name', 'asc')
+			.execute();
+
+		return { products, brands, categories, title: 'Productos' };
 	} catch {
-		return { products: [], title: 'Productos' };
+		return { products: [], brands: [], categories: [], title: 'Productos' };
 	}
 };
 

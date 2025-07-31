@@ -1,16 +1,24 @@
 <!-- src/routes/products/+page.svelte -->
 <script lang="ts">
 	import { invalidate, goto } from '$app/navigation';
-
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import Table from '$lib/components/Table.svelte';
 	import { showToast } from '$lib/stores/Toast';
-	import { Package, Plus, Trash2, Search } from 'lucide-svelte';
+	import {
+		Package,
+		Plus,
+		Trash2,
+		Search,
+		SortAsc,
+		SortDesc,
+		MoreVertical,
+		Eye,
+		Edit,
+		ChevronDown
+	} from 'lucide-svelte';
 	import { formatDate } from '$lib/utils/formatDate';
 	import type { ProductImage, ProductsOverview } from '$lib/types';
 	import { can } from '$lib/stores/permissions';
-
-	// Use the optimized view type
 
 	// Estados y referencias
 	let confirmModal: HTMLDialogElement | null = $state(null);
@@ -27,11 +35,14 @@
 	const { data } = $props<{
 		data: {
 			products: ProductsOverview[];
+			brands: { code: string; name: string }[];
+			categories: { code: string; name: string }[];
 		};
 	}>();
 
 	// Permissions
 	let canCreate = $derived(can('products:create'));
+	let canUpdate = $derived(can('products:update'));
 	let canDelete = $derived(can('products:delete'));
 
 	// Filtered and sorted products
@@ -73,6 +84,9 @@
 
 		return filtered;
 	});
+
+	// Computed values for UI
+	let hasActiveFilters = $derived(searchTerm || selectedBrand || selectedCategory || showInactive);
 
 	// Table columns - simplified
 	const columns = [
@@ -181,80 +195,172 @@
 	</button>
 </PageTitle>
 
-<!-- Search and Filters -->
-<div class="bg-base-100 rounded-lg border border-base-300 p-4 mb-6">
-	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-		<!-- Search -->
-		<div class="relative">
-			<Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 opacity-50" />
-			<input
-				type="text"
-				placeholder="Buscar productos..."
-				class="input input-bordered w-full pl-10"
-				bind:value={searchTerm}
-			/>
+<!-- Modern Toolbar -->
+<div class="card bg-base-100 border border-base-300 mb-6">
+	<div class="card-body p-4">
+		<!-- Top Row: Search and Actions -->
+		<div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+			<!-- Search -->
+			<div class="relative flex-1 max-w-md">
+				<Search
+					class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-base-content/50"
+				/>
+				<input
+					type="text"
+					placeholder="Buscar productos, SKU, marca..."
+					class="input input-bordered w-full pl-10 pr-4"
+					bind:value={searchTerm}
+				/>
+			</div>
+
+			<!-- Action Buttons -->
+			<div class="flex items-center gap-2">
+				<!-- Filter Dropdown -->
+				<div class="dropdown dropdown-end">
+					<div tabindex="0" role="button" class="btn btn-outline btn-sm gap-2">
+						<Search class="w-4 h-4" />
+						Filtros
+						{#if hasActiveFilters}
+							<div class="badge badge-primary badge-xs">•</div>
+						{/if}
+						<ChevronDown class="w-3 h-3" />
+					</div>
+					<div
+						class="dropdown-content card card-compact w-80 p-4 shadow-lg bg-base-100 border border-base-300 z-10"
+					>
+						<div class="space-y-4">
+							<h3 class="font-semibold text-sm">Filtrar productos</h3>
+
+							<!-- Brand Filter -->
+							<div>
+								<label class="label label-text text-xs font-medium" for="filter-brand">Marca</label>
+								<select
+									id="filter-brand"
+									class="select select-bordered select-sm w-full"
+									bind:value={selectedBrand}
+								>
+									<option value="">Todas las marcas</option>
+									{#each data.brands || [] as brand (brand.code)}
+										<option value={brand.code}>{brand.name}</option>
+									{/each}
+								</select>
+							</div>
+
+							<!-- Category Filter -->
+							<div>
+								<label class="label label-text text-xs font-medium" for="filter-category"
+									>Categoría</label
+								>
+								<select
+									id="filter-category"
+									class="select select-bordered select-sm w-full"
+									bind:value={selectedCategory}
+								>
+									<option value="">Todas las categorías</option>
+									{#each data.categories || [] as category (category.code)}
+										<option value={category.code}>{category.name}</option>
+									{/each}
+								</select>
+							</div>
+
+							<!-- Show Inactive -->
+							<div class="form-control">
+								<label class="label cursor-pointer justify-start gap-3">
+									<input type="checkbox" class="checkbox checkbox-sm" bind:checked={showInactive} />
+									<span class="label-text text-sm">Mostrar productos inactivos</span>
+								</label>
+							</div>
+
+							<!-- Actions -->
+							<div class="flex justify-between pt-2">
+								<button class="btn btn-ghost btn-sm" onclick={clearFilters}> Limpiar </button>
+								<button
+									class="btn btn-primary btn-sm"
+									onclick={() => (document.activeElement as HTMLElement)?.blur()}
+								>
+									Aplicar
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Sort Dropdown -->
+				<div class="dropdown dropdown-end">
+					<div tabindex="0" role="button" class="btn btn-outline btn-sm gap-2">
+						{@render sortIcon()}
+						Ordenar
+						<ChevronDown class="w-3 h-3" />
+					</div>
+					<ul
+						class="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-lg border border-base-300 z-10"
+					>
+						<li>
+							{@render sortButton('name', 'Nombre')}
+						</li>
+						<li>
+							{@render sortButton('price', 'Precio')}
+						</li>
+						<li>
+							{@render sortButton('created_at', 'Fecha de creación')}
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 
-		<!-- Brand Filter -->
-		<select class="select select-bordered" bind:value={selectedBrand}>
-			<option value="">Todas las marcas</option>
-			{#each data.brands as brand (brand.code)}
-				<option value={brand.code}>{brand.name}</option>
-			{/each}
-		</select>
-
-		<!-- Category Filter -->
-		<select class="select select-bordered" bind:value={selectedCategory}>
-			<option value="">Todas las categorías</option>
-			{#each data.categories as category (category.code)}
-				<option value={category.code}>{category.name}</option>
-			{/each}
-		</select>
-
-		<!-- Show Inactive -->
-		<label class="flex items-center gap-2 cursor-pointer">
-			<input type="checkbox" class="checkbox checkbox-sm" bind:checked={showInactive} />
-			<span class="text-sm">Mostrar inactivos</span>
-		</label>
-
-		<!-- Sort -->
-		<div class="flex gap-1">
-			<button
-				class="btn btn-outline btn-sm"
-				onclick={() => toggleSort('name')}
-				class:btn-active={sortField === 'name'}
-			>
-				Nombre {#if sortField === 'name'}{sortDirection === 'asc' ? '↑' : '↓'}{/if}
-			</button>
-			<button
-				class="btn btn-outline btn-sm"
-				onclick={() => toggleSort('price')}
-				class:btn-active={sortField === 'price'}
-			>
-				Precio {#if sortField === 'price'}{sortDirection === 'asc' ? '↑' : '↓'}{/if}
-			</button>
+		<!-- Results Summary -->
+		<div class="flex items-center justify-between text-sm">
+			<div class="text-base-content/60">
+				Mostrando {filteredProducts.length} de {data.products.length} productos
+			</div>
+			{#if hasActiveFilters}
+				<button class="btn btn-ghost btn-xs gap-1" onclick={clearFilters}>
+					<span>Limpiar filtros</span>
+				</button>
+			{/if}
 		</div>
-
-		<!-- Clear Filters -->
-		<button class="btn btn-ghost btn-sm" onclick={clearFilters}> Limpiar filtros </button>
-	</div>
-</div>
-
-<!-- Results Summary -->
-<div class="flex items-center justify-between mb-4">
-	<div class="text-sm opacity-60">
-		Mostrando {filteredProducts.length} de {data.products.length} productos
 	</div>
 </div>
 
 <!-- Products Table -->
-<div class="bg-base-100 rounded-lg border border-base-300 overflow-hidden">
-	<Table
-		{columns}
-		rows={filteredProducts()}
-		emptyMessage="No se encontraron productos"
-		className="border-0"
-	/>
+<div class="card bg-base-100 border border-base-300 overflow-hidden">
+	<div class="card-body p-0">
+		{#if filteredProducts.length === 0}
+			<div class="empty-state py-12">
+				<div class="empty-state-icon">
+					<Package size={48} />
+				</div>
+				<h3 class="empty-state-title">
+					{searchTerm || selectedBrand || selectedCategory
+						? 'No se encontraron productos'
+						: 'No hay productos'}
+				</h3>
+				<p class="empty-state-message">
+					{#if searchTerm || selectedBrand || selectedCategory}
+						Intenta ajustar los filtros de búsqueda
+					{:else}
+						Comienza creando tu primer producto
+					{/if}
+				</p>
+				{#if !searchTerm && !selectedBrand && !selectedCategory && canCreate}
+					<button class="btn btn-primary mt-4" onclick={openCreateModal}>
+						<Plus class="w-4 h-4" />
+						Crear primer producto
+					</button>
+				{/if}
+			</div>
+		{:else}
+			<Table
+				{columns}
+				rows={filteredProducts()}
+				emptyMessage="No se encontraron productos"
+				className="border-0"
+				striped={true}
+				hover={true}
+			/>
+		{/if}
+	</div>
 </div>
 
 <!-- Modal de confirmación para eliminar -->
@@ -321,11 +427,61 @@
 {/snippet}
 
 {#snippet actionsCell(product: ProductsOverview)}
-	<div class="flex gap-1 justify-end">
-		{#if canDelete && product.code}
-			<button class="btn btn-ghost btn-xs text-error" onclick={() => confirmDelete(product.code!)}>
-				<Trash2 class="w-3 h-3" />
-			</button>
-		{/if}
+	<div class="flex justify-end">
+		<div class="dropdown dropdown-end">
+			<div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle">
+				<MoreVertical class="w-4 h-4" />
+			</div>
+			<ul
+				class="dropdown-content menu bg-base-100 rounded-box w-48 p-2 shadow-lg border border-base-300 z-10"
+			>
+				<li>
+					<button class="flex items-center gap-3 text-sm">
+						<Eye class="w-4 h-4 text-info" />
+						Ver detalles
+					</button>
+				</li>
+				{#if canUpdate}
+					<li>
+						<button class="flex items-center gap-3 text-sm">
+							<Edit class="w-4 h-4 text-warning" />
+							Editar
+						</button>
+					</li>
+				{/if}
+				{#if canDelete && product.code}
+					<div class="divider my-1"></div>
+					<li>
+						<button
+							class="flex items-center gap-3 text-sm text-error hover:bg-error/10"
+							onclick={() => confirmDelete(product.code!)}
+						>
+							<Trash2 class="w-4 h-4" />
+							Eliminar
+						</button>
+					</li>
+				{/if}
+			</ul>
+		</div>
 	</div>
+{/snippet}
+
+{#snippet sortIcon()}
+	{#if sortDirection === 'asc'}
+		<SortAsc class="w-4 h-4" />
+	{:else}
+		<SortDesc class="w-4 h-4" />
+	{/if}
+{/snippet}
+
+{#snippet sortButton(field: string, label: string)}
+	<button
+		class="flex justify-between {sortField === field ? 'active' : ''}"
+		onclick={() => toggleSort(field)}
+	>
+		<span>{label}</span>
+		{#if sortField === field}
+			{@render sortIcon()}
+		{/if}
+	</button>
 {/snippet}
