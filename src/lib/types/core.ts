@@ -20,6 +20,7 @@ export type Branches = Selectable<DB['branches']>;
 export type Brands = Selectable<DB['brands']>;
 export type Categories = Selectable<DB['categories']>;
 export type Products = Selectable<DB['products']>;
+export type ProductsOverview = Selectable<DB['products_overview']>;
 export type Permissions = Selectable<DB['permissions']>;
 
 // Insertable types for creating new records

@@ -7,39 +7,17 @@
 	import { showToast } from '$lib/stores/Toast';
 	import { Package, Plus, Edit, Trash2, Search } from 'lucide-svelte';
 	import { formatDate } from '$lib/utils/formatDate';
-	import type { Brands, Categories } from '$lib/types';
+	import type { Brands, Categories, ProductImage, ProductsOverview } from '$lib/types';
 	import { can } from '$lib/stores/permissions';
 
-	// Product type with joined data
-	interface ProductImage {
-		url: string;
-		alt?: string;
-		isPrimary?: boolean;
-	}
-
-	interface ProductWithJoins {
-		code: string;
-		name: string;
-		description: string | null;
-		brand_code: string;
-		category_code: string;
-		price: number;
-		sku: string | null;
-		images: string | ProductImage[]; // JSON string or parsed array
-		is_active: boolean;
-		created_at: string;
-		updated_at: string;
-		brand_name: string | null;
-		category_name: string | null;
-		user_name: string | null;
-	}
+	// Use the optimized view type
 
 	// Estados y referencias
 	let modal: HTMLDialogElement | null = $state(null);
 	let confirmModal: HTMLDialogElement | null = $state(null);
 	let isEditing = $state(false);
 	let message = $state('');
-	let selectedProduct = $state<ProductWithJoins | null>(null);
+	let selectedProduct = $state<ProductsOverview | null>(null);
 
 	// Search and filter states
 	let searchTerm = $state('');
@@ -51,7 +29,7 @@
 
 	const { data } = $props<{
 		data: {
-			products: ProductWithJoins[];
+			products: ProductsOverview[];
 			brands: Brands[];
 			categories: Categories[];
 		};
@@ -64,10 +42,10 @@
 
 	// Filtered and sorted products
 	let filteredProducts = $derived(() => {
-		let filtered = data.products.filter((product: ProductWithJoins) => {
+		let filtered = data.products.filter((product: ProductsOverview) => {
 			const matchesSearch =
 				!searchTerm ||
-				product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				product.sku?.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				product.brand_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				product.category_name?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -81,9 +59,9 @@
 
 		// Simple sorting
 		if (sortField && sortDirection) {
-			filtered.sort((a: ProductWithJoins, b: ProductWithJoins) => {
-				let aVal = a[sortField as keyof ProductWithJoins];
-				let bVal = b[sortField as keyof ProductWithJoins];
+			filtered.sort((a: ProductsOverview, b: ProductsOverview) => {
+				let aVal = a[sortField as keyof ProductsOverview];
+				let bVal = b[sortField as keyof ProductsOverview];
 
 				if (sortField === 'price') {
 					aVal = Number(aVal) || 0;
@@ -110,12 +88,12 @@
 			render: productCell
 		},
 		{
-			key: 'brand_name' as keyof ProductWithJoins,
+			key: 'brand_name' as keyof ProductsOverview,
 			label: 'Marca',
 			class: 'text-sm'
 		},
 		{
-			key: 'category_name' as keyof ProductWithJoins,
+			key: 'category_name' as keyof ProductsOverview,
 			label: 'Categoría',
 			class: 'text-sm'
 		},
@@ -151,7 +129,7 @@
 
 	function openEditModal(productCode: string) {
 		if (!canUpdate) return;
-		const product = data.products.find((p: ProductWithJoins) => p.code === productCode);
+		const product = data.products.find((p: ProductsOverview) => p.code === productCode);
 		if (!product) return;
 
 		isEditing = true;
@@ -163,27 +141,28 @@
 		setTimeout(() => {
 			const form = modal?.querySelector('form');
 			if (form) {
-				(form.querySelector('#name') as HTMLInputElement).value = product.name;
+				(form.querySelector('#name') as HTMLInputElement).value = product.name || '';
 				(form.querySelector('#description') as HTMLTextAreaElement).value =
 					product.description || '';
-				(form.querySelector('#brand_code') as HTMLSelectElement).value = product.brand_code;
-				(form.querySelector('#category_code') as HTMLSelectElement).value = product.category_code;
-				(form.querySelector('#price') as HTMLInputElement).value = product.price;
+				(form.querySelector('#brand_code') as HTMLSelectElement).value = product.brand_code || '';
+				(form.querySelector('#category_code') as HTMLSelectElement).value =
+					product.category_code || '';
+				(form.querySelector('#price') as HTMLInputElement).value = String(product.price || 0);
 				(form.querySelector('#sku') as HTMLInputElement).value = product.sku || '';
 				// Get primary image URL from images array
 				const images: ProductImage[] = Array.isArray(product.images)
-					? product.images
-					: JSON.parse(product.images || '[]');
+					? (product.images as unknown as ProductImage[])
+					: JSON.parse(JSON.stringify(product.images) || '[]');
 				const primaryImage = images.find((img) => img.isPrimary) || images[0];
 				(form.querySelector('#image_url') as HTMLInputElement).value = primaryImage?.url || '';
-				(form.querySelector('#is_active') as HTMLInputElement).checked = product.is_active;
+				(form.querySelector('#is_active') as HTMLInputElement).checked = product.is_active || false;
 			}
 		}, 50);
 	}
 
 	function confirmDelete(productCode: string) {
 		if (!canDelete) return;
-		const product = data.products.find((p: ProductWithJoins) => p.code === productCode);
+		const product = data.products.find((p: ProductsOverview) => p.code === productCode);
 		if (!product) return;
 
 		selectedProduct = product;
@@ -212,7 +191,7 @@
 		event.preventDefault();
 		const formData = new FormData(event.target as HTMLFormElement);
 
-		if (isEditing && selectedProduct) {
+		if (isEditing && selectedProduct && selectedProduct.code) {
 			formData.append('code', selectedProduct.code);
 		}
 
@@ -243,7 +222,9 @@
 
 		try {
 			const formData = new FormData();
-			formData.append('code', selectedProduct.code);
+			if (selectedProduct.code) {
+				formData.append('code', selectedProduct.code);
+			}
 
 			const response = await fetch('?/delete', {
 				method: 'POST',
@@ -519,10 +500,10 @@
 	</div>
 </dialog>
 
-{#snippet productCell(product: ProductWithJoins)}
+{#snippet productCell(product: ProductsOverview)}
 	{@const images = Array.isArray(product.images)
-		? (product.images as ProductImage[])
-		: (JSON.parse(product.images || '[]') as ProductImage[])}
+		? (product.images as unknown as ProductImage[])
+		: (JSON.parse(JSON.stringify(product.images) || '[]') as ProductImage[])}
 	{@const primaryImage = images.find((img) => img.isPrimary) || images[0]}
 
 	<div class="flex items-center gap-3">
@@ -553,29 +534,29 @@
 	</div>
 {/snippet}
 
-{#snippet priceCell(product: ProductWithJoins)}
+{#snippet priceCell(product: ProductsOverview)}
 	<span class="font-mono font-medium">${Number(product.price).toFixed(2)}</span>
 {/snippet}
 
-{#snippet statusCell(product: ProductWithJoins)}
+{#snippet statusCell(product: ProductsOverview)}
 	<div class="badge {product.is_active ? 'badge-success' : 'badge-error'} badge-sm">
 		{product.is_active ? 'Activo' : 'Inactivo'}
 	</div>
 {/snippet}
 
-{#snippet dateCell(product: ProductWithJoins)}
-	<span class="text-xs opacity-60">{formatDate(product.created_at)}</span>
+{#snippet dateCell(product: ProductsOverview)}
+	<span class="text-xs opacity-60">{product.created_at ? formatDate(product.created_at) : ''}</span>
 {/snippet}
 
-{#snippet actionsCell(product: ProductWithJoins)}
+{#snippet actionsCell(product: ProductsOverview)}
 	<div class="flex gap-1 justify-end">
-		{#if canUpdate}
-			<button class="btn btn-ghost btn-xs" onclick={() => openEditModal(product.code)}>
+		{#if canUpdate && product.code}
+			<button class="btn btn-ghost btn-xs" onclick={() => openEditModal(product.code!)}>
 				<Edit class="w-3 h-3" />
 			</button>
 		{/if}
-		{#if canDelete}
-			<button class="btn btn-ghost btn-xs text-error" onclick={() => confirmDelete(product.code)}>
+		{#if canDelete && product.code}
+			<button class="btn btn-ghost btn-xs text-error" onclick={() => confirmDelete(product.code!)}>
 				<Trash2 class="w-3 h-3" />
 			</button>
 		{/if}

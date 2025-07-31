@@ -15,29 +15,11 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 	}
 
 	try {
-		// Get products with brand and category names
+		// Get products from the optimized view
 		const products = await locals.db
-			.selectFrom('products')
-			.leftJoin('brands', 'products.brand_code', 'brands.code')
-			.leftJoin('categories', 'products.category_code', 'categories.code')
-			.leftJoin('users', 'products.user_code', 'users.code')
-			.select([
-				'products.code',
-				'products.name',
-				'products.description',
-				'products.brand_code',
-				'products.category_code',
-				'products.price',
-				'products.sku',
-				'products.images',
-				'products.is_active',
-				'products.created_at',
-				'products.updated_at',
-				'brands.name as brand_name',
-				'categories.name as category_name',
-				'users.name as user_name'
-			])
-			.orderBy('products.name', 'asc')
+			.selectFrom('products_overview')
+			.selectAll()
+			.orderBy('name', 'asc')
 			.execute();
 
 		// Get brands and categories for dropdowns
