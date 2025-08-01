@@ -226,7 +226,7 @@
 		{/if}
 
 		<form onsubmit={handleSubmit} class="space-y-4">
-			<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
+			<fieldset class="fieldset bg-base-200">
 				<legend class="fieldset-legend">Nombre *</legend>
 				<input
 					id="name"
@@ -237,10 +237,10 @@
 					required
 					maxlength="100"
 				/>
-				<p class="input-hint">El nombre debe ser único y descriptivo</p>
+				<p class="label">El nombre debe ser único y descriptivo</p>
 			</fieldset>
 
-			<fieldset class="fieldset bg-base-200 border-base-300 rounded-box border p-4">
+			<fieldset class="fieldset bg-base-200">
 				<legend class="fieldset-legend">Descripción</legend>
 				<textarea
 					id="description"
@@ -250,7 +250,7 @@
 					rows="3"
 					maxlength="500"
 				></textarea>
-				<p class="input-hint">Descripción opcional para explicar el propósito de la marca</p>
+				<p class="label">Descripción opcional para explicar el propósito de la marca</p>
 			</fieldset>
 
 			<div class="modal-action">

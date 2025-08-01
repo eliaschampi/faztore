@@ -196,7 +196,7 @@
 </PageTitle>
 
 <!-- Modern Toolbar -->
-<div class="card bg-base-100 border border-base-300 mb-6">
+<div class="card bg-base-200 border border-base-300 mb-6">
 	<div class="card-body p-4">
 		<!-- Top Row: Search and Actions -->
 		<div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
@@ -215,7 +215,7 @@
 			<div class="flex items-center gap-2">
 				<!-- Filter Dropdown -->
 				<div class="dropdown dropdown-end">
-					<div tabindex="0" role="button" class="btn btn-outline btn-sm gap-2">
+					<div tabindex="0" role="button" class="btn btn-soft btn-warning btn-sm gap-2">
 						<Search class="w-4 h-4" />
 						Filtros
 						{#if hasActiveFilters}
@@ -324,7 +324,9 @@
 </div>
 
 <!-- Products Table -->
-<div class="card bg-base-100 border border-base-300 overflow-hidden">
+<div
+	class="card bg-gradient-to-br from-base-200 to-base-100 shadow duration-300 border border-base-300/30 rounded-xl mb-6 overflow-hidden"
+>
 	<div class="card-body p-0">
 		{#if filteredProducts.length === 0}
 			<div class="empty-state py-12">
